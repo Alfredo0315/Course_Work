@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Киберспорт - Главная</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+<!-- Header -->
+<header class="header">
+    <div class="container">
+        <div class="header-content">
+            <div class="logo">
+                <h1>ESPORTS<span>.RU</span></h1>
+            </div>
+            <nav class="nav">
+                <ul>
+                    <li><a href="index.html" class="active">Главная</a></li>
+                    <li><a href="pages/news.html">Новости</a></li>
+                    <li><a href="pages/tournaments.html">Турниры</a></li>
+                    <li><a href="pages/teams.html">Команды</a></li>
+                    <li><a href="pages/players.html">Игроки</a></li>
+                    <li><a href="pages/matches.html">Матчи</a></li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</header>
+
+<!-- Hero Section -->
+<section class="hero">
+    <div class="container">
+        <div class="hero-content">
+            <h2 class="hero-title">Мир киберспорта</h2>
+            <p class="hero-subtitle">Новости, турниры, команды и игроки</p>
+        </div>
+    </div>
+</section>
+
+<!-- Main Content -->
+<main class="main-content">
+    <div class="container">
+        <div class="content-grid">
+            <!-- Left Column - News -->
+            <div class="news-column">
+                <h2 class="section-title">Последние новости</h2>
+                <div id="news-list" class="news-list">
+                    <!-- Новости будут загружены через JS -->
+                    <div class="loading">Загрузка новостей...</div>
+                </div>
+            </div>
+
+            <!-- Right Column - Sidebar -->
+            <aside class="sidebar">
+                <!-- Upcoming Matches -->
+                <div class="widget">
+                    <h3 class="widget-title">Предстоящие матчи</h3>
+                    <div id="upcoming-matches" class="matches-widget">
+                        <div class="loading">Загрузка...</div>
+                    </div>
+                </div>
+
+                <!-- Top Teams -->
+                <div class="widget">
+                    <h3 class="widget-title">Топ команды</h3>
+                    <div id="top-teams" class="teams-widget">
+                        <div class="loading">Загрузка...</div>
+                    </div>
+                </div>
+
+                <!-- Top Players -->
+                <div class="widget">
+                    <h3 class="widget-title">Топ игроки</h3>
+                    <div id="top-players" class="players-widget">
+                        <div class="loading">Загрузка...</div>
+                    </div>
+                </div>
+            </aside>
+        </div>
+    </div>
+</main>
+
+<!-- Footer -->
+<footer class="footer">
+    <div class="container">
+        <div class="footer-content">
+            <p>&copy; 2024 Esports.ru - Информационный портал о киберспорте</p>
+            <div class="footer-links">
+                <a href="#">О проекте</a>
+                <a href="#">Контакты</a>
+                <a href="#">Реклама</a>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<script src="js/api.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>

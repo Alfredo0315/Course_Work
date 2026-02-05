@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Команды - Киберспорт</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/responsive.css">
+</head>
+<body>
+<!-- Header -->
+<header class="header">
+    <div class="container">
+        <div class="header-content">
+            <div class="logo">
+                <h1>ESPORTS<span>.RU</span></h1>
+            </div>
+            <nav class="nav">
+                <ul>
+                    <li><a href="../index.html">Главная</a></li>
+                    <li><a href="news.html">Новости</a></li>
+                    <li><a href="tournaments.html">Турниры</a></li>
+                    <li><a href="teams.html" class="active">Команды</a></li>
+                    <li><a href="players.html">Игроки</a></li>
+                    <li><a href="matches.html">Матчи</a></li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</header>
+
+<!-- Main Content -->
+<main class="main-content">
+    <div class="container">
+        <h1 class="section-title">Киберспортивные команды</h1>
+
+        <!-- Filters -->
+        <div class="filters" style="margin-bottom: 30px;">
+            <select id="country-filter" class="filter-select" style="padding: 10px; background: var(--card-bg); color: var(--text-primary); border: 1px solid var(--border-color); border-radius: 6px;">
+                <option value="">Все страны</option>
+            </select>
+        </div>
+
+        <!-- Teams Grid -->
+        <div id="teams-grid" class="grid-3">
+            <div class="loading">Загрузка команд...</div>
+        </div>
+    </div>
+</main>
+
+<!-- Footer -->
+<footer class="footer">
+    <div class="container">
+        <div class="footer-content">
+            <p>&copy; 2024 Esports.ru - Информационный портал о киберспорте</p>
+            <div class="footer-links">
+                <a href="#">О проекте</a>
+                <a href="#">Контакты</a>
+                <a href="#">Реклама</a>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<script src="../js/api.js"></script>
+<script>
+    let allTeams = [];
+
+    document.addEventListener('DOMContentLoaded', async () => {
+        await loadTeams();
+        setupFilters();
+    });
+
+    async function loadTeams() {
+        try {
+            showLoading('teams-grid');
+            allTeams = await api.getTeams();
+
+            if (!allTeams || allTeams.length === 0) {
+                document.getElementById('teams-grid').innerHTML =
+                    '<p class="error-message">Команды не найдены</p>';
+                return;
+            }
+
+            displayTeams(allTeams);
+            populateCountryFilter();
+        } catch (error) {
+            console.error('Error loading teams:', error);
+            showError('teams-grid', 'Ошибка загрузки команд');
+        }
+    }
+
+    function displayTeams(teams) {
+        const sorted = teams.sort((a, b) => (b.prize_pool || 0) - (a.prize_pool || 0));
+        const teamsHTML = sorted.map(team => `
+                <div class="card">
+                    <h3 class="card-title">${team.name}</h3>
+                    <div class="card-content">
+                        <p><strong>Страна:</strong> ${team.country || 'N/A'}</p>
+                        <p><strong>Основана:</strong> ${team.founded_year || 'N/A'}</p>
+                        <p><strong>Призовые:</strong> <span style="color: var(--primary-color); font-weight: 600;">${formatCurrency(team.prize_pool || 0)}</span></p>
+                        ${team.id_Tournament ? `<p><strong>Турнир:</strong> #${team.id_Tournament}</p>` : ''}
+                    </div>
+                </div>
+            `).join('');
+
+        document.getElementById('teams-grid').innerHTML = teamsHTML;
+    }
+
+    function populateCountryFilter() {
+        const countries = [...new Set(allTeams.map(t => t.country).filter(c => c))];
+        const select = document.getElementById('country-filter');
+        countries.forEach(country => {
+            const option = document.createElement('option');
+            option.value = country;
+            option.textContent = country;
+            select.appendChild(option);
+        });
+    }
+
+    function setupFilters() {
+        document.getElementById('country-filter').addEventListener('change', (e) => {
+            const country = e.target.value;
+            const filtered = country ? allTeams.filter(t => t.country === country) : allTeams;
+            displayTeams(filtered);
+        });
+    }
+</script>
+</body>
+</html>

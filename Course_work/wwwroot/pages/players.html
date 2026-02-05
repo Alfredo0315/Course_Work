@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Игроки - Киберспорт</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/responsive.css">
+</head>
+<body>
+<!-- Header -->
+<header class="header">
+    <div class="container">
+        <div class="header-content">
+            <div class="logo">
+                <h1>ESPORTS<span>.RU</span></h1>
+            </div>
+            <nav class="nav">
+                <ul>
+                    <li><a href="../index.html">Главная</a></li>
+                    <li><a href="news.html">Новости</a></li>
+                    <li><a href="tournaments.html">Турниры</a></li>
+                    <li><a href="teams.html">Команды</a></li>
+                    <li><a href="players.html" class="active">Игроки</a></li>
+                    <li><a href="matches.html">Матчи</a></li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</header>
+
+<!-- Main Content -->
+<main class="main-content">
+    <div class="container">
+        <h1 class="section-title">Киберспортсмены</h1>
+
+        <!-- Filters -->
+        <div class="filters" style="margin-bottom: 30px; display: flex; gap: 15px;">
+            <select id="country-filter" class="filter-select" style="padding: 10px; background: var(--card-bg); color: var(--text-primary); border: 1px solid var(--border-color); border-radius: 6px;">
+                <option value="">Все страны</option>
+            </select>
+            <button id="sort-prize" class="btn btn-secondary">Сортировать по призовым</button>
+        </div>
+
+        <!-- Players Table -->
+        <div class="table-container">
+            <table id="players-table">
+                <thead>
+                <tr>
+                    <th>Рейтинг</th>
+                    <th>Никнейм</th>
+                    <th>Имя</th>
+                    <th>Страна</th>
+                    <th>Команда</th>
+                    <th>Призовые</th>
+                </tr>
+                </thead>
+                <tbody id="players-tbody">
+                <tr><td colspan="6" style="text-align: center;">Загрузка...</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</main>
+
+<!-- Footer -->
+<footer class="footer">
+    <div class="container">
+        <div class="footer-content">
+            <p>&copy; 2024 Esports.ru - Информационный портал о киберспорте</p>
+            <div class="footer-links">
+                <a href="#">О проекте</a>
+                <a href="#">Контакты</a>
+                <a href="#">Реклама</a>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<script src="../js/api.js"></script>
+<script>
+    let allPlayers = [];
+    let sortByPrize = false;
+
+    document.addEventListener('DOMContentLoaded', async () => {
+        await loadPlayers();
+        setupFilters();
+    });
+
+    async function loadPlayers() {
+        try {
+            allPlayers = await api.getPlayers();
+
+            if (!allPlayers || allPlayers.length === 0) {
+                document.getElementById('players-tbody').innerHTML =
+                    '<tr><td colspan="6" class="error-message">Игроки не найдены</td></tr>';
+                return;
+            }
+
+            displayPlayers(allPlayers);
+            populateCountryFilter();
+        } catch (error) {
+            console.error('Error loading players:', error);
+            document.getElementById('players-tbody').innerHTML =
+                '<tr><td colspan="6" class="error-message">Ошибка загрузки игроков</td></tr>';
+        }
+    }
+
+    function displayPlayers(players) {
+        const sorted = sortByPrize
+            ? players.sort((a, b) => (b.prize_pool || 0) - (a.prize_pool || 0))
+            : players;
+
+        const playersHTML = sorted.map((player, index) => `
+                <tr>
+                    <td style="color: var(--primary-color); font-weight: 700;">#${index + 1}</td>
+                    <td><strong>${player.nickname}</strong></td>
+                    <td>${player.name || ''} ${player.surname || ''}</td>
+                    <td>${player.country || 'N/A'}</td>
+                    <td>${getTeamName(player.id_Teams)}</td>
+                    <td style="color: var(--primary-color); font-weight: 600;">${formatCurrency(player.prize_pool || 0)}</td>
+                </tr>
+            `).join('');
+
+        document.getElementById('players-tbody').innerHTML = playersHTML;
+    }
+
+    function getTeamName(teamId) {
+        // Можно загрузить команды и показать название
+        return teamId ? `Команда #${teamId}` : 'Без команды';
+    }
+
+    function populateCountryFilter() {
+        const countries = [...new Set(allPlayers.map(p => p.country).filter(c => c))];
+        const select = document.getElementById('country-filter');
+        countries.forEach(country => {
+            const option = document.createElement('option');
+            option.value = country;
+            option.textContent = country;
+            select.appendChild(option);
+        });
+    }
+
+    function setupFilters() {
+        document.getElementById('country-filter').addEventListener('change', (e) => {
+            const country = e.target.value;
+            const filtered = country ? allPlayers.filter(p => p.country === country) : allPlayers;
+            displayPlayers(filtered);
+        });
+
+        document.getElementById('sort-prize').addEventListener('click', () => {
+            sortByPrize = !sortByPrize;
+            displayPlayers(allPlayers);
+            document.getElementById('sort-prize').textContent =
+                sortByPrize ? 'Сортировка: по призовым ↓' : 'Сортировка: по рейтингу';
+        });
+    }
+</script>
+</body>
+</html>
