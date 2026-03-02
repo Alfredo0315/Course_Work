@@ -4,9 +4,6 @@ using Course_Work.Models;
 
 namespace Course_Work.Controllers
 {
-    /// <summary>
-    /// API контроллер для управления игроками
-    /// </summary>
     [Route("api/[controller]")]
     [ApiController]
     public class PlayersController : ControllerBase
@@ -18,110 +15,124 @@ namespace Course_Work.Controllers
             _context = context;
         }
 
-        // GET: api/Players
-        /// <summary>
-        /// Получить список всех игроков
-        /// </summary>
+        
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Player>>> GetPlayers()
         {
-            return await _context.Players
-                .Include(p => p.Team)
-                .Include(p => p.PlayersGames)
-                    .ThenInclude(pg => pg.Game)
-                .ToListAsync();
+            try
+            {
+                var players = await _context.Players
+                    .OrderByDescending(p => p.Prize_pool)
+                    .ToListAsync();
+                
+                return Ok(players);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = "Ошибка загрузки игроков", error = ex.Message });
+            }
         }
 
-        // GET: api/Players/5
-        /// <summary>
-        /// Получить игрока по ID
-        /// </summary>
+       
         [HttpGet("{id}")]
         public async Task<ActionResult<Player>> GetPlayer(int id)
         {
-            var player = await _context.Players
-                .Include(p => p.Team)
-                .Include(p => p.PlayersGames)
-                    .ThenInclude(pg => pg.Game)
-                .FirstOrDefaultAsync(p => p.ID_Players == id);
-
-            if (player == null)
+            try
             {
-                return NotFound();
-            }
+                var player = await _context.Players.FindAsync(id);
+                
+                if (player == null)
+                {
+                    return NotFound(new { message = "Игрок не найден" });
+                }
 
-            return player;
+                return Ok(player);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = "Ошибка загрузки игрока", error = ex.Message });
+            }
         }
 
-        // GET: api/Players/ByTeam/5
-        /// <summary>
-        /// Получить игроков по команде
-        /// </summary>
+        
         [HttpGet("ByTeam/{teamId}")]
         public async Task<ActionResult<IEnumerable<Player>>> GetPlayersByTeam(int teamId)
         {
-            var players = await _context.Players
-                .Include(p => p.Team)
-                .Where(p => p.ID_Teams == teamId)
-                .ToListAsync();
-
-            return Ok(players);
+            try
+            {
+                var players = await _context.Players
+                    .Where(p => p.ID_Teams == teamId)
+                    .ToListAsync();
+                
+                return Ok(players);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = "Ошибка загрузки игроков команды", error = ex.Message });
+            }
         }
 
-        // GET: api/Players/ByCountry/Ukraine
-        /// <summary>
-        /// Получить игроков по стране
-        /// </summary>
+        
         [HttpGet("ByCountry/{country}")]
         public async Task<ActionResult<IEnumerable<Player>>> GetPlayersByCountry(string country)
         {
-            var players = await _context.Players
-                .Include(p => p.Team)
-                .Where(p => p.Country == country)
-                .ToListAsync();
-
-            return Ok(players);
+            try
+            {
+                var players = await _context.Players
+                    .Where(p => p.Country == country)
+                    .ToListAsync();
+                
+                return Ok(players);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = "Ошибка загрузки игроков по стране", error = ex.Message });
+            }
         }
 
-        // GET: api/Players/TopByPrize
-        /// <summary>
-        /// Получить топ игроков по призовому фонду
-        /// </summary>
+       
         [HttpGet("TopByPrize")]
-        public async Task<ActionResult<IEnumerable<Player>>> GetTopPlayersByPrize(int count = 10)
+        public async Task<ActionResult<IEnumerable<Player>>> GetTopPlayersByPrize([FromQuery] int count = 10)
         {
-            var players = await _context.Players
-                .Include(p => p.Team)
-                .OrderByDescending(p => p.Prize_pool)
-                .Take(count)
-                .ToListAsync();
-
-            return Ok(players);
+            try
+            {
+                var players = await _context.Players
+                    .OrderByDescending(p => p.Prize_pool)
+                    .Take(count)
+                    .ToListAsync();
+                
+                return Ok(players);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = "Ошибка загрузки топ игроков", error = ex.Message });
+            }
         }
 
-        // POST: api/Players
-        /// <summary>
-        /// Создать нового игрока
-        /// </summary>
+       
         [HttpPost]
-        public async Task<ActionResult<Player>> PostPlayer(Player player)
+        public async Task<ActionResult<Player>> CreatePlayer(Player player)
         {
-            _context.Players.Add(player);
-            await _context.SaveChangesAsync();
+            try
+            {
+                _context.Players.Add(player);
+                await _context.SaveChangesAsync();
 
-            return CreatedAtAction(nameof(GetPlayer), new { id = player.ID_Players }, player);
+                return CreatedAtAction(nameof(GetPlayer), new { id = player.ID_Players }, player);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = "Ошибка создания игрока", error = ex.Message });
+            }
         }
 
-        // PUT: api/Players/5
-        /// <summary>
-        /// Обновить информацию об игроке
-        /// </summary>
+        
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutPlayer(int id, Player player)
+        public async Task<IActionResult> UpdatePlayer(int id, Player player)
         {
             if (id != player.ID_Players)
             {
-                return BadRequest();
+                return BadRequest(new { message = "ID не совпадает" });
             }
 
             _context.Entry(player).State = EntityState.Modified;
@@ -134,34 +145,42 @@ namespace Course_Work.Controllers
             {
                 if (!PlayerExists(id))
                 {
-                    return NotFound();
+                    return NotFound(new { message = "Игрок не найден" });
                 }
                 else
                 {
                     throw;
                 }
             }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = "Ошибка обновления игрока", error = ex.Message });
+            }
 
             return NoContent();
         }
 
-        // DELETE: api/Players/5
-        /// <summary>
-        /// Удалить игрока
-        /// </summary>
+        
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeletePlayer(int id)
         {
-            var player = await _context.Players.FindAsync(id);
-            if (player == null)
+            try
             {
-                return NotFound();
+                var player = await _context.Players.FindAsync(id);
+                if (player == null)
+                {
+                    return NotFound(new { message = "Игрок не найден" });
+                }
+
+                _context.Players.Remove(player);
+                await _context.SaveChangesAsync();
+
+                return NoContent();
             }
-
-            _context.Players.Remove(player);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = "Ошибка удаления игрока", error = ex.Message });
+            }
         }
 
         private bool PlayerExists(int id)

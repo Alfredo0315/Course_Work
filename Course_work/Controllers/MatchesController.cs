@@ -18,39 +18,69 @@ namespace Course_Work.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Match>>> GetMatches()
         {
-            return await _context.Matches
-                .Include(m => m.Tournament)
-                .OrderByDescending(m => m.Match_date)
-                .ToListAsync();
+            try
+            {
+                var matches = await _context.Matches
+                    .OrderByDescending(m => m.Match_date)
+                    .ToListAsync();
+                
+                return Ok(matches);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = "Ошибка загрузки матчей", error = ex.Message });
+            }
         }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<Match>> GetMatch(int id)
         {
-            var match = await _context.Matches
-                .Include(m => m.Tournament)
-                .FirstOrDefaultAsync(m => m.ID_Matches == id);
-            
-            if (match == null) return NotFound();
-            return match;
+            try
+            {
+                var match = await _context.Matches.FindAsync(id);
+                if (match == null) return NotFound(new { message = "Матч не найден" });
+                return Ok(match);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = "Ошибка загрузки матча", error = ex.Message });
+            }
         }
 
         [HttpGet("ByTournament/{tournamentId}")]
         public async Task<ActionResult<IEnumerable<Match>>> GetMatchesByTournament(int tournamentId)
         {
-            return await _context.Matches
-                .Where(m => m.ID_Tournament == tournamentId)
-                .OrderBy(m => m.Match_date)
-                .ToListAsync();
+            try
+            {
+                var matches = await _context.Matches
+                    .Where(m => m.ID_Tournament == tournamentId)
+                    .OrderBy(m => m.Match_date)
+                    .ToListAsync();
+                
+                return Ok(matches);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = "Ошибка загрузки матчей турнира", error = ex.Message });
+            }
         }
 
         [HttpGet("Upcoming")]
         public async Task<ActionResult<IEnumerable<Match>>> GetUpcomingMatches()
         {
-            return await _context.Matches
-                .Where(m => m.Status == "Запланирован" || m.Status == "Идет")
-                .OrderBy(m => m.Match_date)
-                .ToListAsync();
+            try
+            {
+                var matches = await _context.Matches
+                    .Where(m => m.Status == "Запланирован" || m.Status == "Идет")
+                    .OrderBy(m => m.Match_date)
+                    .ToListAsync();
+                
+                return Ok(matches);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = "Ошибка загрузки предстоящих матчей", error = ex.Message });
+            }
         }
     }
 }

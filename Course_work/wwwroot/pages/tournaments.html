@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Турниры - Киберспорт</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/responsive.css">
+</head>
+<body>
+
+<header class="header">
+    <div class="container">
+        <div class="header-content">
+            <div class="logo">
+                <h1>ESPORTS<span>.RU</span></h1>
+            </div>
+            <nav class="nav">
+                <ul>
+                    <li><a href="../index.html">Главная</a></li>
+                    <li><a href="tournaments.html" class="active">Турниры</a></li>
+                    <li><a href="teams.html">Команды</a></li>
+                    <li><a href="players.html">Игроки</a></li>
+                    <li><a href="matches.html">Матчи</a></li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</header>
+
+
+<main class="main-content">
+    <div class="container">
+        <h1 class="section-title">Турниры</h1>
+        
+        <div id="tournaments-grid" class="grid-3">
+            <div class="loading">Загрузка турниров...</div>
+        </div>
+    </div>
+</main>
+
+
+<footer class="footer">
+    <div class="container">
+        <div class="footer-content">
+            <p>&copy; 2024 Esports.ru - Информационный портал о киберспорте</p>
+            <div class="footer-links">
+                <a href="#">О проекте</a>
+                <a href="#">Контакты</a>
+                <a href="#">Реклама</a>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<script src="../js/api.js"></script>
+<script>
+    let games = {}; // Кеш игр
+
+    document.addEventListener('DOMContentLoaded', async () => {
+        await loadGamesCache();
+        await loadTournaments();
+    });
+
+
+    async function loadGamesCache() {
+        try {
+            const gamesList = await api.getGames();
+            if (gamesList && gamesList.length > 0) {
+                gamesList.forEach(g => {
+                    games[g.id_Games] = g;
+                });
+            }
+        } catch (error) {
+            console.error('Error loading games cache:', error);
+        }
+    }
+    
+    function getGameName(gameId) {
+        if (!gameId) return 'N/A';
+        const game = games[gameId];
+        return game ? game.name : 'N/A';
+    }
+
+    async function loadTournaments() {
+        try {
+            showLoading('tournaments-grid');
+            const tournaments = await api.getTournaments();
+
+            if (!tournaments || tournaments.length === 0) {
+                document.getElementById('tournaments-grid').innerHTML =
+                    '<p class="error-message">Турниры не найдены</p>';
+                return;
+            }
+
+            displayTournaments(tournaments);
+        } catch (error) {
+            console.error('Error loading tournaments:', error);
+            showError('tournaments-grid', 'Ошибка загрузки турниров');
+        }
+    }
+
+    function displayTournaments(tournaments) {
+        const sorted = tournaments.sort((a, b) => {
+            const dateA = new Date(a.start_date);
+            const dateB = new Date(b.start_date);
+            return dateB - dateA;
+        });
+
+        const tournamentsHTML = sorted.map(tournament => {
+            const gameName = getGameName(tournament.id_Games || tournament.ID_Games || tournament.Id_Games);
+
+            return `
+                    <div class="card">
+                        <h3 class="card-title">${tournament.name}</h3>
+                        <div class="card-content">
+                            <p><strong>🎮 Дисциплина:</strong> ${gameName}</p>
+                            <p><strong>📅 Начало:</strong> ${formatDate(tournament.start_date)}</p>
+                            <p><strong>🏁 Окончание:</strong> ${formatDate(tournament.end_date)}</p>
+                            <p><strong>🌍 Страна:</strong> ${tournament.location_of_the_event || 'N/A'}</p>
+                            <p><strong>💰 Призовой фонд:</strong> <span style="color: var(--primary-color); font-weight: 600;">${formatCurrency(tournament.prize_pool || 0)}</span></p>
+                        </div>
+                    </div>
+                `;
+        }).join('');
+
+        document.getElementById('tournaments-grid').innerHTML = tournamentsHTML;
+    }
+</script>
+</body>
+</html>

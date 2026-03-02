@@ -137,3 +137,5 @@ C:\Users\arina\Desktop\предметы_3_курс\2_семестр\курсов
 C:\Users\arina\Desktop\предметы_3_курс\2_семестр\курсовая\c#\Course_Work\Course_work\obj\Debug\net8.0\Course_work.genruntimeconfig.cache
 C:\Users\arina\Desktop\предметы_3_курс\2_семестр\курсовая\c#\Course_Work\Course_work\obj\Debug\net8.0\ref\Course_work.dll
 C:\Users\arina\Desktop\предметы_3_курс\2_семестр\курсовая\c#\Course_Work\Course_work\bin\Debug\net8.0\Course_work.staticwebassets.runtime.json
+C:\Users\arina\Desktop\предметы_3_курс\2_семестр\курсовая\c#\Course_Work\Course_work\obj\Debug\net8.0\Course_work.sourcelink.json
+C:\Users\arina\Desktop\предметы_3_курс\2_семестр\курсовая\c#\Course_Work\Course_work\obj\Debug\net8.0\swae.build.ex.cache

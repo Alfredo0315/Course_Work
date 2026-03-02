@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="../css/responsive.css">
 </head>
 <body>
-<!-- Header -->
+
 <header class="header">
     <div class="container">
         <div class="header-content">
@@ -18,7 +18,6 @@
             <nav class="nav">
                 <ul>
                     <li><a href="../index.html">Главная</a></li>
-                    <li><a href="news.html">Новости</a></li>
                     <li><a href="tournaments.html">Турниры</a></li>
                     <li><a href="teams.html">Команды</a></li>
                     <li><a href="players.html" class="active">Игроки</a></li>
@@ -29,12 +28,12 @@
     </div>
 </header>
 
-<!-- Main Content -->
+
 <main class="main-content">
     <div class="container">
         <h1 class="section-title">Киберспортсмены</h1>
 
-        <!-- Filters -->
+        
         <div class="filters" style="margin-bottom: 30px; display: flex; gap: 15px;">
             <select id="country-filter" class="filter-select" style="padding: 10px; background: var(--card-bg); color: var(--text-primary); border: 1px solid var(--border-color); border-radius: 6px;">
                 <option value="">Все страны</option>
@@ -42,7 +41,7 @@
             <button id="sort-prize" class="btn btn-secondary">Сортировать по призовым</button>
         </div>
 
-        <!-- Players Table -->
+        
         <div class="table-container">
             <table id="players-table">
                 <thead>
@@ -63,7 +62,7 @@
     </div>
 </main>
 
-<!-- Footer -->
+
 <footer class="footer">
     <div class="container">
         <div class="footer-content">
@@ -80,12 +79,22 @@
 <script src="../js/api.js"></script>
 <script>
     let allPlayers = [];
+    let allTeams = [];
     let sortByPrize = false;
 
     document.addEventListener('DOMContentLoaded', async () => {
+        await loadTeams();
         await loadPlayers();
         setupFilters();
     });
+
+    async function loadTeams() {
+        try {
+            allTeams = await api.getTeams();
+        } catch (error) {
+            console.error('Error loading teams:', error);
+        }
+    }
 
     async function loadPlayers() {
         try {
@@ -126,8 +135,9 @@
     }
 
     function getTeamName(teamId) {
-        // Можно загрузить команды и показать название
-        return teamId ? `Команда #${teamId}` : 'Без команды';
+        if (!teamId) return 'Без команды';
+        const team = allTeams.find(t => t.id_Teams === teamId);
+        return team ? team.name : `Команда #${teamId}`;
     }
 
     function populateCountryFilter() {

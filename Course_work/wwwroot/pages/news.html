@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Новости - Киберспорт</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/responsive.css">
+</head>
+<body>
+
+<header class="header">
+    <div class="container">
+        <div class="header-content">
+            <div class="logo">
+                <h1>ESPORTS<span>.RU</span></h1>
+            </div>
+            <nav class="nav">
+                <ul>
+                    <li><a href="../index.html">Главная</a></li>
+                    <li><a href="news.html" class="active">Новости</a></li>
+                    <li><a href="tournaments.html">Турниры</a></li>
+                    <li><a href="teams.html">Команды</a></li>
+                    <li><a href="players.html">Игроки</a></li>
+                    <li><a href="matches.html">Матчи</a></li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</header>
+
+
+<main class="main-content">
+    <div class="container">
+        <h1 class="section-title">Последние новости</h1>
+
+        
+        <div id="news-list" class="news-list">
+            <div class="loading">Загрузка новостей...</div>
+        </div>
+    </div>
+</main>
+
+
+<footer class="footer">
+    <div class="container">
+        <div class="footer-content">
+            <p>&copy; 2026 Esports.ru - Информационный портал о киберспорте</p>
+            <div class="footer-links">
+                <a href="#">О проекте</a>
+                <a href="#">Контакты</a>
+                <a href="#">Реклама</a>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<script src="../js/api.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', async () => {
+        await loadAllNews();
+    });
+
+    async function loadAllNews() {
+        try {
+            showLoading('news-list');
+            const news = await api.getNews();
+
+            if (!news || news.length === 0) {
+                document.getElementById('news-list').innerHTML =
+                    '<p class="error-message">Новостей пока нет</p>';
+                return;
+            }
+
+            
+            news.sort((a, b) => {
+                const dateA = new Date(a.date_of_publication + ' ' + a.time_of_publication);
+                const dateB = new Date(b.date_of_publication + ' ' + b.time_of_publication);
+                return dateB - dateA;
+            });
+
+            const newsHTML = news.map(item => createNewsCard(item)).join('');
+            document.getElementById('news-list').innerHTML = newsHTML;
+        } catch (error) {
+            console.error('Error loading news:', error);
+            showError('news-list', 'Не удалось загрузить новости');
+        }
+    }
+
+    function createNewsCard(news) {
+        const date = formatDate(news.date_of_publication);
+        const time = formatTime(news.time_of_publication);
+
+        return `
+                <div class="news-card">
+                    <div class="news-card-content">
+                        <h3 class="news-card-title">${news.title}</h3>
+                        <div class="news-card-meta">
+                            <span class="news-date">📅 ${date}</span>
+                            <span class="news-time">🕐 ${time}</span>
+                        </div>
+                        <p class="news-card-description">${news.description || 'Описание отсутствует'}</p>
+                    </div>
+                </div>
+            `;
+    }
+</script>
+</body>
+</html>

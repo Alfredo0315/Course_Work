@@ -1,42 +1,151 @@
-// Main JavaScript for index.html
-
+let allNews = []; 
+let displayedNewsCount = 10; 
+let tournaments = {}; 
+let games = {}; 
 document.addEventListener('DOMContentLoaded', async () => {
-    await loadNews();
+    await loadTournamentsCache();
+    await loadGamesCache();
+    await loadAllNews();
     await loadUpcomingMatches();
     await loadTopTeams();
     await loadTopPlayers();
 });
 
-// Load News
-async function loadNews() {
+
+async function loadTournamentsCache() {
+    try {
+        tournaments = {};
+        const tournamentsList = await api.getTournaments();
+        if (tournamentsList && tournamentsList.length > 0) {
+            tournamentsList.forEach(t => {
+                tournaments[t.id_Tournament] = t;
+            });
+        }
+    } catch (error) {
+        console.error('Error loading tournaments cache:', error);
+    }
+}
+
+
+async function loadGamesCache() {
+    try {
+        games = {};
+        const gamesList = await api.getGames();
+        if (gamesList && gamesList.length > 0) {
+            gamesList.forEach(g => {
+                games[g.id_Games] = g;
+            });
+        }
+    } catch (error) {
+        console.error('Error loading games cache:', error);
+    }
+}
+
+
+function getTournamentName(tournamentId) {
+    if (!tournamentId) return 'N/A';
+    const tournament = tournaments[tournamentId];
+    return tournament ? tournament.name : `Турнир #${tournamentId}`;
+}
+
+
+function getGameName(gameId) {
+    if (!gameId) return 'N/A';
+    const game = games[gameId];
+    return game ? game.name : 'N/A';
+}
+
+
+async function loadAllNews() {
     try {
         showLoading('news-list');
-        const news = await api.getNews();
+        allNews = await api.getNews();
 
-        if (!news || news.length === 0) {
+        if (!allNews || allNews.length === 0) {
             document.getElementById('news-list').innerHTML =
                 '<p class="error-message">Новостей пока нет</p>';
             return;
         }
 
-        // Sort by date (newest first)
-        news.sort((a, b) => new Date(b.date_of_publication) - new Date(a.date_of_publication));
+        
+        allNews.sort((a, b) => {
+            const dateA = new Date(a.date_of_publication + ' ' + a.time_of_publication);
+            const dateB = new Date(b.date_of_publication + ' ' + b.time_of_publication);
+            return dateB - dateA;
+        });
 
-        const newsHTML = news.map(item => createNewsCard(item)).join('');
-        document.getElementById('news-list').innerHTML = newsHTML;
+        displayNews(allNews.slice(0, displayedNewsCount));
+        updateShowMoreButton();
     } catch (error) {
         console.error('Error loading news:', error);
         showError('news-list', 'Не удалось загрузить новости');
     }
 }
 
-// Create News Card HTML
+
+function displayNews(newsToShow) {
+    const newsHTML = newsToShow.map(item => createNewsCard(item)).join('');
+
+    const container = document.getElementById('news-list');
+    container.innerHTML = newsHTML;
+}
+
+
+function updateShowMoreButton() {
+    const container = document.getElementById('news-list');
+    const showMoreBtn = document.getElementById('show-more-btn');
+
+    if (displayedNewsCount >= allNews.length) {
+        if (showMoreBtn) {
+            showMoreBtn.style.display = 'none';
+        }
+    } else {
+        if (showMoreBtn) {
+            showMoreBtn.style.display = 'block';
+        }
+    }
+}
+
+
+function showMoreNews() {
+    displayedNewsCount += 10;
+    displayNews(allNews.slice(0, displayedNewsCount));
+    updateShowMoreButton();
+}
+
+
+function filterNewsByDate(selectedDate) {
+    if (!selectedDate) {
+        displayNews(allNews.slice(0, displayedNewsCount));
+        return;
+    }
+
+    const filtered = allNews.filter(news => {
+        const newsDate = new Date(news.date_of_publication).toISOString().split('T')[0];
+        return newsDate === selectedDate;
+    });
+
+    if (filtered.length === 0) {
+        document.getElementById('news-list').innerHTML =
+            '<p class="error-message">Новостей за эту дату не найдено</p>';
+    } else {
+        displayNews(filtered);
+    }
+
+  
+    const showMoreBtn = document.getElementById('show-more-btn');
+    if (showMoreBtn) {
+        showMoreBtn.style.display = 'none';
+    }
+}
+
+
 function createNewsCard(news) {
     const date = formatDate(news.date_of_publication);
     const time = formatTime(news.time_of_publication);
 
     return `
-        <div class="news-card" onclick="openNewsDetail(${news.id_News})">
+        <div class="news-card">
             <div class="news-card-content">
                 <h3 class="news-card-title">${news.title}</h3>
                 <div class="news-card-meta">
@@ -49,13 +158,7 @@ function createNewsCard(news) {
     `;
 }
 
-// Open News Detail (можно будет добавить модальное окно)
-function openNewsDetail(newsId) {
-    console.log('Opening news:', newsId);
-    // TODO: Показать детали новости в модальном окне
-}
 
-// Load Upcoming Matches
 async function loadUpcomingMatches() {
     try {
         showLoading('upcoming-matches');
@@ -67,8 +170,7 @@ async function loadUpcomingMatches() {
             return;
         }
 
-        // Filter upcoming and ongoing matches
-        const now = new Date();
+        
         const upcomingMatches = matches
             .filter(m => m.status === 'Запланирован' || m.status === 'Идет')
             .sort((a, b) => new Date(a.match_date) - new Date(b.match_date))
@@ -88,14 +190,17 @@ async function loadUpcomingMatches() {
     }
 }
 
-// Create Match Card HTML
+
 function createMatchCard(match) {
     const dateTime = formatDateTime(match.match_date);
     const statusClass = match.status === 'Идет' ? 'live' : 'upcoming';
 
+    
+    const tournamentName = getTournamentName(match.id_Tournament || match.ID_Tournament || match.Id_Tournament);
+
     return `
         <div class="match-item">
-            <div class="match-tournament">🏆 Турнир #${match.id_Tournament}</div>
+            <div class="match-tournament">🏆 ${tournamentName}</div>
             <div class="match-date">📅 ${dateTime}</div>
             <span class="match-status ${statusClass}">${match.status}</span>
             ${match.score ? `<div style="margin-top: 5px; font-weight: 600;">Счёт: ${match.score}</div>` : ''}
@@ -103,7 +208,7 @@ function createMatchCard(match) {
     `;
 }
 
-// Load Top Teams
+
 async function loadTopTeams() {
     try {
         showLoading('top-teams');
@@ -115,7 +220,7 @@ async function loadTopTeams() {
             return;
         }
 
-        // Sort by prize pool
+        
         const topTeams = teams
             .sort((a, b) => (b.prize_pool || 0) - (a.prize_pool || 0))
             .slice(0, 10);
@@ -128,7 +233,7 @@ async function loadTopTeams() {
     }
 }
 
-// Create Team Card HTML
+
 function createTeamCard(team, rank) {
     return `
         <div class="team-item">
@@ -142,7 +247,7 @@ function createTeamCard(team, rank) {
     `;
 }
 
-// Load Top Players
+
 async function loadTopPlayers() {
     try {
         showLoading('top-players');
@@ -162,7 +267,7 @@ async function loadTopPlayers() {
     }
 }
 
-// Create Player Card HTML
+
 function createPlayerCard(player, rank) {
     return `
         <div class="player-item">

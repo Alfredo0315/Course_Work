@@ -18,17 +18,34 @@ namespace Course_Work.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<News>>> GetNews()
         {
-            return await _context.News
-                .OrderByDescending(n => n.Date_of_publication)
-                .ToListAsync();
+            try
+            {
+                var news = await _context.News
+                    .OrderByDescending(n => n.Date_of_publication)
+                    .ThenByDescending(n => n.Time_of_publication)
+                    .ToListAsync();
+                
+                return Ok(news);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = "Ошибка загрузки новостей", error = ex.Message });
+            }
         }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<News>> GetNews(int id)
         {
-            var news = await _context.News.FindAsync(id);
-            if (news == null) return NotFound();
-            return news;
+            try
+            {
+                var news = await _context.News.FindAsync(id);
+                if (news == null) return NotFound(new { message = "Новость не найдена" });
+                return Ok(news);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = "Ошибка загрузки новости", error = ex.Message });
+            }
         }
     }
 }

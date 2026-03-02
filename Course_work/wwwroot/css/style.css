@@ -494,3 +494,103 @@ tr:hover {
     grid-template-columns: repeat(4, 1fr);
     gap: 20px;
 }
+.news-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid var(--border-color);
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.date-search {
+    position: relative;
+}
+
+.date-picker-container {
+    position: absolute;
+    top: 50px;
+    right: 0;
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 20px;
+    z-index: 100;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    min-width: 350px;
+}
+
+.date-picker-input {
+    padding: 10px 15px;
+    background-color: var(--bg-color);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    color: var(--text-primary);
+    font-size: 14px;
+    flex: 1;
+}
+
+.date-picker-input:focus {
+    outline: none;
+    border-color: var(--primary-color);
+}
+
+/* Color scheme for date input */
+.date-picker-input::-webkit-calendar-picker-indicator {
+    filter: invert(1);
+    cursor: pointer;
+}
+
+/* Show More Button */
+.show-more-container {
+    text-align: center;
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border-color);
+}
+
+#show-more-btn {
+    min-width: 200px;
+    padding: 12px 30px;
+    font-size: 16px;
+}
+
+/* Mobile Responsiveness for Date Search */
+@media (max-width: 768px) {
+    .news-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .date-search {
+        width: 100%;
+    }
+
+    .date-picker-container {
+        position: relative;
+        top: 10px;
+        right: auto;
+        width: 100%;
+        min-width: auto;
+        flex-direction: column;
+    }
+
+    .date-picker-input {
+        width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    .date-picker-container {
+        padding: 15px;
+    }
+
+    .date-picker-container .btn {
+        width: 100%;
+    }
+}

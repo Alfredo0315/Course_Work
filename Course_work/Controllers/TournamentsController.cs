@@ -18,22 +18,37 @@ namespace Course_Work.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Tournament>>> GetTournaments()
         {
-            return await _context.Tournament
-                .Include(t => t.Teams)
-                .Include(t => t.Matches)
-                .ToListAsync();
+            try
+            {
+                var tournaments = await _context.Tournament
+                    .OrderByDescending(t => t.Start_date)
+                    .ToListAsync();
+                
+                return Ok(tournaments);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = "Ошибка загрузки турниров", error = ex.Message });
+            }
         }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<Tournament>> GetTournament(int id)
         {
-            var tournament = await _context.Tournament
-                .Include(t => t.Teams)
-                .Include(t => t.Matches)
-                .FirstOrDefaultAsync(t => t.ID_Tournament == id);
-            
-            if (tournament == null) return NotFound();
-            return tournament;
+            try
+            {
+                var tournament = await _context.Tournament
+                    .Include(t => t.Teams)
+                    .Include(t => t.Matches)
+                    .FirstOrDefaultAsync(t => t.ID_Tournament == id);
+                
+                if (tournament == null) return NotFound();
+                return Ok(tournament);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = "Ошибка", error = ex.Message });
+            }
         }
     }
 }

@@ -1,19 +1,12 @@
-// ========================================
-// API Configuration
-// ========================================
-// ВАЖНО: Измените этот URL на тот, который показывается в консоли Rider при запуске
-// Обычно это https://localhost:7XXX или https://localhost:5001
-const API_BASE_URL = 'http://localhost:5057/api';  // ← УБРАЛ S В HTTPS!
+const API_BASE_URL = 'http://localhost:5057/api'; 
 
-// ========================================
-// API Service Class
-// ========================================
+
 class ApiService {
     constructor(baseUrl) {
         this.baseUrl = baseUrl;
     }
 
-    // Generic GET request
+    
     async get(endpoint) {
         try {
             const response = await fetch(`${this.baseUrl}${endpoint}`, {
@@ -34,7 +27,7 @@ class ApiService {
         }
     }
 
-    // Generic POST request
+    
     async post(endpoint, data) {
         try {
             const response = await fetch(`${this.baseUrl}${endpoint}`, {
@@ -56,9 +49,7 @@ class ApiService {
         }
     }
 
-    // ========================================
-    // News API
-    // ========================================
+    
     async getNews() {
         return this.get('/News');
     }
@@ -67,9 +58,7 @@ class ApiService {
         return this.get(`/News/${id}`);
     }
 
-    // ========================================
-    // Games API
-    // ========================================
+   
     async getGames() {
         return this.get('/Games');
     }
@@ -78,9 +67,7 @@ class ApiService {
         return this.get(`/Games/${id}`);
     }
 
-    // ========================================
-    // Tournaments API
-    // ========================================
+    
     async getTournaments() {
         return this.get('/Tournaments');
     }
@@ -89,9 +76,6 @@ class ApiService {
         return this.get(`/Tournaments/${id}`);
     }
 
-    // ========================================
-    // Teams API
-    // ========================================
     async getTeams() {
         return this.get('/Teams');
     }
@@ -104,9 +88,7 @@ class ApiService {
         return this.get(`/Teams/ByTournament/${tournamentId}`);
     }
 
-    // ========================================
-    // Players API
-    // ========================================
+    
     async getPlayers() {
         return this.get('/Players');
     }
@@ -127,9 +109,7 @@ class ApiService {
         return this.get(`/Players/TopByPrize?count=${count}`);
     }
 
-    // ========================================
-    // Matches API
-    // ========================================
+   
     async getMatches() {
         return this.get('/Matches');
     }
@@ -147,14 +127,10 @@ class ApiService {
     }
 }
 
-// ========================================
-// Create Global Instance
-// ========================================
+
 const api = new ApiService(API_BASE_URL);
 
-// ========================================
-// Helper Functions
-// ========================================
+
 
 function formatDate(dateString) {
     if (!dateString) return 'N/A';
@@ -201,8 +177,6 @@ function showError(elementId, message = 'Ошибка загрузки данн�
     }
 }
 
-// ========================================
-// Debugging Helper
-// ========================================
+
 console.log('API Service initialized with base URL:', API_BASE_URL);
 console.log('Убедитесь что URL совпадает с портом вашего C# API!');

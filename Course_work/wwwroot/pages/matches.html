@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Матчи - Киберспорт</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/responsive.css">
+</head>
+<body>
+<!-- Header -->
+<header class="header">
+    <div class="container">
+        <div class="header-content">
+            <div class="logo">
+                <h1>ESPORTS<span>.RU</span></h1>
+            </div>
+            <nav class="nav">
+                <ul>
+                    <li><a href="../index.html">Главная</a></li>
+                    <li><a href="tournaments.html">Турниры</a></li>
+                    <li><a href="teams.html">Команды</a></li>
+                    <li><a href="players.html">Игроки</a></li>
+                    <li><a href="matches.html" class="active">Матчи</a></li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</header>
+
+
+<main class="main-content">
+    <div class="container">
+        <h1 class="section-title">Матчи</h1>
+
+     
+        <div class="tabs" style="margin-bottom: 30px; display: flex; gap: 10px; flex-wrap: wrap;">
+            <button class="btn active" id="tab-all" onclick="showMatches('all')">Все матчи</button>
+            <button class="btn btn-secondary" id="tab-upcoming" onclick="showMatches('upcoming')">Предстоящие</button>
+            <button class="btn btn-secondary" id="tab-live" onclick="showMatches('live')">Идут сейчас</button>
+            <button class="btn btn-secondary" id="tab-completed" onclick="showMatches('completed')">Завершённые</button>
+        </div>
+
+       
+        <div class="table-container">
+            <table id="matches-table">
+                <thead>
+                <tr>
+                    <th>Дата и время</th>
+                    <th>Турнир</th>
+                    <th>Статус</th>
+                    <th>Счёт</th>
+                </tr>
+                </thead>
+                <tbody id="matches-tbody">
+                <tr><td colspan="4" style="text-align: center;">Загрузка...</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</main>
+
+
+<footer class="footer">
+    <div class="container">
+        <div class="footer-content">
+            <p>&copy; 2024 Esports.ru - Информационный портал о киберспорте</p>
+            <div class="footer-links">
+                <a href="#">О проекте</a>
+                <a href="#">Контакты</a>
+                <a href="#">Реклама</a>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<script src="../js/api.js"></script>
+<script>
+    let allMatches = [];
+    let tournaments = {};
+    let currentFilter = 'all';
+
+    document.addEventListener('DOMContentLoaded', async () => {
+        await loadTournamentsCache();
+        await loadMatches();
+    });
+
+    
+    async function loadTournamentsCache() {
+        try {
+            const tournamentsList = await api.getTournaments();
+            if (tournamentsList && tournamentsList.length > 0) {
+                tournamentsList.forEach(t => {
+                    tournaments[t.id_Tournament] = t;
+                });
+            }
+        } catch (error) {
+            console.error('Error loading tournaments cache:', error);
+        }
+    }
+
+    
+    function getTournamentName(tournamentId) {
+        if (!tournamentId) return 'N/A';
+        const tournament = tournaments[tournamentId];
+        return tournament ? tournament.name : `Турнир #${tournamentId}`;
+    }
+
+    async function loadMatches() {
+        try {
+            allMatches = await api.getMatches();
+
+            if (!allMatches || allMatches.length === 0) {
+                document.getElementById('matches-tbody').innerHTML =
+                    '<tr><td colspan="4" class="error-message">Матчи не найдены</td></tr>';
+                return;
+            }
+
+            displayMatches(allMatches);
+        } catch (error) {
+            console.error('Error loading matches:', error);
+            document.getElementById('matches-tbody').innerHTML =
+                '<tr><td colspan="4" class="error-message">Ошибка загрузки матчей</td></tr>';
+        }
+    }
+
+    function showMatches(filter) {
+        currentFilter = filter;
+
+        
+        document.querySelectorAll('.tabs .btn').forEach(btn => {
+            btn.classList.remove('active');
+            btn.classList.add('btn-secondary');
+        });
+        document.getElementById(`tab-${filter}`).classList.add('active');
+        document.getElementById(`tab-${filter}`).classList.remove('btn-secondary');
+
+        
+        let filtered = allMatches;
+        if (filter === 'upcoming') {
+            filtered = allMatches.filter(m => m.status === 'Запланирован');
+        } else if (filter === 'live') {
+            filtered = allMatches.filter(m => m.status === 'Идет');
+        } else if (filter === 'completed') {
+            filtered = allMatches.filter(m => m.status === 'Завершен');
+        }
+
+        displayMatches(filtered);
+    }
+
+    function displayMatches(matches) {
+        if (matches.length === 0) {
+            document.getElementById('matches-tbody').innerHTML =
+                '<tr><td colspan="4" style="text-align: center; color: var(--text-secondary);">Матчи не найдены</td></tr>';
+            return;
+        }
+
+        const sorted = matches.sort((a, b) => {
+            const dateA = new Date(a.match_date);
+            const dateB = new Date(b.match_date);
+            return dateB - dateA;
+        });
+
+        const matchesHTML = sorted.map(match => {
+            const statusClass = match.status === 'Идет' ? 'live' :
+                match.status === 'Запланирован' ? 'upcoming' : '';
+
+           
+            const tournamentName = getTournamentName(match.id_Tournament || match.ID_Tournament);
+
+            return `
+                    <tr>
+                        <td>${formatDateTime(match.match_date)}</td>
+                        <td>${tournamentName}</td>
+                        <td><span class="match-status ${statusClass}">${match.status}</span></td>
+                        <td><strong>${match.score || 'TBD'}</strong></td>
+                    </tr>
+                `;
+        }).join('');
+
+        document.getElementById('matches-tbody').innerHTML = matchesHTML;
+    }
+</script>
+</body>
+</html>

@@ -18,15 +18,30 @@ namespace Course_Work.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Game>>> GetGames()
         {
-            return await _context.Games.ToListAsync();
+            try
+            {
+                var games = await _context.Games.ToListAsync();
+                return Ok(games);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = "Ошибка загрузки игр", error = ex.Message });
+            }
         }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<Game>> GetGame(int id)
         {
-            var game = await _context.Games.FindAsync(id);
-            if (game == null) return NotFound();
-            return game;
+            try
+            {
+                var game = await _context.Games.FindAsync(id);
+                if (game == null) return NotFound(new { message = "Игра не найдена" });
+                return Ok(game);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = "Ошибка загрузки игры", error = ex.Message });
+            }
         }
     }
 }

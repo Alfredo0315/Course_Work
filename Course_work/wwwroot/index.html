@@ -8,7 +8,6 @@
     <link rel="stylesheet" href="css/responsive.css">
 </head>
 <body>
-<!-- Header -->
 <header class="header">
     <div class="container">
         <div class="header-content">
@@ -18,7 +17,6 @@
             <nav class="nav">
                 <ul>
                     <li><a href="index.html" class="active">Главная</a></li>
-                    <li><a href="pages/news.html">Новости</a></li>
                     <li><a href="pages/tournaments.html">Турниры</a></li>
                     <li><a href="pages/teams.html">Команды</a></li>
                     <li><a href="pages/players.html">Игроки</a></li>
@@ -29,7 +27,7 @@
     </div>
 </header>
 
-<!-- Hero Section -->
+
 <section class="hero">
     <div class="container">
         <div class="hero-content">
@@ -39,22 +37,42 @@
     </div>
 </section>
 
-<!-- Main Content -->
+
 <main class="main-content">
     <div class="container">
         <div class="content-grid">
             <!-- Left Column - News -->
             <div class="news-column">
-                <h2 class="section-title">Последние новости</h2>
+                <div class="news-header">
+                    <h2 class="section-title">Последние новости</h2>
+
+                 
+                    <div class="date-search">
+                        <button class="btn btn-secondary" onclick="toggleDatePicker()">
+                            📅 Поиск по дате
+                        </button>
+                        <div id="date-picker-container" class="date-picker-container" style="display: none;">
+                            <input type="date" id="date-picker" class="date-picker-input">
+                            <button class="btn" onclick="searchByDate()">Найти</button>
+                            <button class="btn btn-secondary" onclick="resetDateFilter()">Сбросить</button>
+                        </div>
+                    </div>
+                </div>
+
                 <div id="news-list" class="news-list">
-                    <!-- Новости будут загружены через JS -->
                     <div class="loading">Загрузка новостей...</div>
+                </div>
+
+               
+                <div class="show-more-container">
+                    <button id="show-more-btn" class="btn" onclick="showMoreNews()" style="display: none;">
+                        Показать еще
+                    </button>
                 </div>
             </div>
 
-            <!-- Right Column - Sidebar -->
+          
             <aside class="sidebar">
-                <!-- Upcoming Matches -->
                 <div class="widget">
                     <h3 class="widget-title">Предстоящие матчи</h3>
                     <div id="upcoming-matches" class="matches-widget">
@@ -62,7 +80,7 @@
                     </div>
                 </div>
 
-                <!-- Top Teams -->
+               
                 <div class="widget">
                     <h3 class="widget-title">Топ команды</h3>
                     <div id="top-teams" class="teams-widget">
@@ -70,7 +88,7 @@
                     </div>
                 </div>
 
-                <!-- Top Players -->
+               
                 <div class="widget">
                     <h3 class="widget-title">Топ игроки</h3>
                     <div id="top-players" class="players-widget">
@@ -82,7 +100,7 @@
     </div>
 </main>
 
-<!-- Footer -->
+
 <footer class="footer">
     <div class="container">
         <div class="footer-content">
@@ -98,5 +116,39 @@
 
 <script src="js/api.js"></script>
 <script src="js/main.js"></script>
+<script>
+    
+    function toggleDatePicker() {
+        const container = document.getElementById('date-picker-container');
+        if (container.style.display === 'none') {
+            container.style.display = 'flex';
+        } else {
+            container.style.display = 'none';
+        }
+    }
+
+    
+    function searchByDate() {
+        const datePicker = document.getElementById('date-picker');
+        const selectedDate = datePicker.value;
+
+        if (!selectedDate) {
+            alert('Пожалуйста, выберите дату');
+            return;
+        }
+
+        filterNewsByDate(selectedDate);
+        toggleDatePicker();
+    }
+
+    
+    function resetDateFilter() {
+        const datePicker = document.getElementById('date-picker');
+        datePicker.value = '';
+        displayedNewsCount = 10;
+        filterNewsByDate(null);
+        toggleDatePicker();
+    }
+</script>
 </body>
 </html>

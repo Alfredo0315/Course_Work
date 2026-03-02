@@ -1,0 +1,47 @@
+# .NET Core
+bin/
+obj/
+out/
+
+# User-specific files
+*.user
+*.suo
+*.userprefs
+*.sln.docstates
+
+# Rider / IDE
+.idea/
+*.sln.iml
+
+# Visual Studio
+.vs/
+*.vscode/
+
+# NuGet
+*.nupkg
+packages/
+
+# Build results
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+[Aa][Rr][Mm]/
+[Aa][Rr][Mm]64/
+bld/
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+[Ll]ogs/
+
+# Entity Framework
+*.db
+*.db-journal
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Secrets (важно!)
+appsettings.Production.json
+secrets.json
