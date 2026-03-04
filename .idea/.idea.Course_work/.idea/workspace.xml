@@ -8,53 +8,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="088cf991-a4d4-4b77-9577-df8393ffab56" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.Course_work/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Course_work/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Course_work/Course_work.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Course_work/Course_work.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Course_work/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Course_work/Program.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Course_work/bin/Debug/net8.0/Course_work.deps.json" beforeDir="false" afterPath="$PROJECT_DIR$/Course_work/bin/Debug/net8.0/Course_work.deps.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Course_work/bin/Debug/net8.0/Course_work.dll" beforeDir="false" afterPath="$PROJECT_DIR$/Course_work/bin/Debug/net8.0/Course_work.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Course_work/bin/Debug/net8.0/Course_work.exe" beforeDir="false" afterPath="$PROJECT_DIR$/Course_work/bin/Debug/net8.0/Course_work.exe" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Course_work/bin/Debug/net8.0/Course_work.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/Course_work/bin/Debug/net8.0/Course_work.pdb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Course_work/bin/Debug/net8.0/Course_work.staticwebassets.endpoints.json" beforeDir="false" afterPath="$PROJECT_DIR$/Course_work/bin/Debug/net8.0/Course_work.staticwebassets.endpoints.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Course_work/bin/Debug/net8.0/Course_work.staticwebassets.runtime.json" beforeDir="false" afterPath="$PROJECT_DIR$/Course_work/bin/Debug/net8.0/Course_work.staticwebassets.runtime.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Course_work/bin/Debug/net8.0/Microsoft.OpenApi.dll" beforeDir="false" afterPath="$PROJECT_DIR$/Course_work/bin/Debug/net8.0/Microsoft.OpenApi.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Course_work/bin/Debug/net8.0/Swashbuckle.AspNetCore.Swagger.dll" beforeDir="false" afterPath="$PROJECT_DIR$/Course_work/bin/Debug/net8.0/Swashbuckle.AspNetCore.Swagger.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Course_work/bin/Debug/net8.0/Swashbuckle.AspNetCore.SwaggerGen.dll" beforeDir="false" afterPath="$PROJECT_DIR$/Course_work/bin/Debug/net8.0/Swashbuckle.AspNetCore.SwaggerGen.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Course_work/bin/Debug/net8.0/Swashbuckle.AspNetCore.SwaggerUI.dll" beforeDir="false" afterPath="$PROJECT_DIR$/Course_work/bin/Debug/net8.0/Swashbuckle.AspNetCore.SwaggerUI.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Course_work/obj/Course_work.csproj.nuget.dgspec.json" beforeDir="false" afterPath="$PROJECT_DIR$/Course_work/obj/Course_work.csproj.nuget.dgspec.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Course_work/obj/Course_work.csproj.nuget.g.props" beforeDir="false" afterPath="$PROJECT_DIR$/Course_work/obj/Course_work.csproj.nuget.g.props" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Course_work/obj/Course_work.csproj.nuget.g.targets" beforeDir="false" afterPath="$PROJECT_DIR$/Course_work/obj/Course_work.csproj.nuget.g.targets" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Course_work/obj/Debug/net8.0/Course_work.AssemblyInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Course_work/obj/Debug/net8.0/Course_work.AssemblyInfo.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Course_work/obj/Debug/net8.0/Course_work.AssemblyInfoInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/Course_work/obj/Debug/net8.0/Course_work.AssemblyInfoInputs.cache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Course_work/obj/Debug/net8.0/Course_work.assets.cache" beforeDir="false" afterPath="$PROJECT_DIR$/Course_work/obj/Debug/net8.0/Course_work.assets.cache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Course_work/obj/Debug/net8.0/Course_work.csproj.AssemblyReference.cache" beforeDir="false" afterPath="$PROJECT_DIR$/Course_work/obj/Debug/net8.0/Course_work.csproj.AssemblyReference.cache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Course_work/obj/Debug/net8.0/Course_work.csproj.CoreCompileInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/Course_work/obj/Debug/net8.0/Course_work.csproj.CoreCompileInputs.cache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Course_work/obj/Debug/net8.0/Course_work.dll" beforeDir="false" afterPath="$PROJECT_DIR$/Course_work/obj/Debug/net8.0/Course_work.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Course_work/obj/Debug/net8.0/Course_work.genruntimeconfig.cache" beforeDir="false" afterPath="$PROJECT_DIR$/Course_work/obj/Debug/net8.0/Course_work.genruntimeconfig.cache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Course_work/obj/Debug/net8.0/Course_work.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/Course_work/obj/Debug/net8.0/Course_work.pdb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Course_work/obj/Debug/net8.0/apphost.exe" beforeDir="false" afterPath="$PROJECT_DIR$/Course_work/obj/Debug/net8.0/apphost.exe" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Course_work/obj/Debug/net8.0/ref/Course_work.dll" beforeDir="false" afterPath="$PROJECT_DIR$/Course_work/obj/Debug/net8.0/ref/Course_work.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Course_work/obj/Debug/net8.0/refint/Course_work.dll" beforeDir="false" afterPath="$PROJECT_DIR$/Course_work/obj/Debug/net8.0/refint/Course_work.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Course_work/obj/Debug/net8.0/rjimswa.dswa.cache.json" beforeDir="false" afterPath="$PROJECT_DIR$/Course_work/obj/Debug/net8.0/rjimswa.dswa.cache.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Course_work/obj/Debug/net8.0/rjsmcshtml.dswa.cache.json" beforeDir="false" afterPath="$PROJECT_DIR$/Course_work/obj/Debug/net8.0/rjsmcshtml.dswa.cache.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Course_work/obj/Debug/net8.0/rjsmrazor.dswa.cache.json" beforeDir="false" afterPath="$PROJECT_DIR$/Course_work/obj/Debug/net8.0/rjsmrazor.dswa.cache.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Course_work/obj/Debug/net8.0/rpswa.dswa.cache.json" beforeDir="false" afterPath="$PROJECT_DIR$/Course_work/obj/Debug/net8.0/rpswa.dswa.cache.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Course_work/obj/Debug/net8.0/staticwebassets.build.endpoints.json" beforeDir="false" afterPath="$PROJECT_DIR$/Course_work/obj/Debug/net8.0/staticwebassets.build.endpoints.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Course_work/obj/Debug/net8.0/staticwebassets.build.json" beforeDir="false" afterPath="$PROJECT_DIR$/Course_work/obj/Debug/net8.0/staticwebassets.build.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Course_work/obj/Debug/net8.0/staticwebassets.build.json.cache" beforeDir="false" afterPath="$PROJECT_DIR$/Course_work/obj/Debug/net8.0/staticwebassets.build.json.cache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Course_work/obj/Debug/net8.0/staticwebassets.development.json" beforeDir="false" afterPath="$PROJECT_DIR$/Course_work/obj/Debug/net8.0/staticwebassets.development.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Course_work/obj/project.assets.json" beforeDir="false" afterPath="$PROJECT_DIR$/Course_work/obj/project.assets.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Course_work/obj/project.nuget.cache" beforeDir="false" afterPath="$PROJECT_DIR$/Course_work/obj/project.nuget.cache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Course_work/obj/project.packagespec.json" beforeDir="false" afterPath="$PROJECT_DIR$/Course_work/obj/project.packagespec.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Course_work/obj/rider.project.model.nuget.info" beforeDir="false" afterPath="$PROJECT_DIR$/Course_work/obj/rider.project.model.nuget.info" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Course_work/obj/rider.project.restore.info" beforeDir="false" afterPath="$PROJECT_DIR$/Course_work/obj/rider.project.restore.info" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Course_work/wwwroot/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/Course_work/wwwroot/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Course_work/wwwroot/pages/matches.html" beforeDir="false" afterPath="$PROJECT_DIR$/Course_work/wwwroot/pages/matches.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Course_work/wwwroot/pages/players.html" beforeDir="false" afterPath="$PROJECT_DIR$/Course_work/wwwroot/pages/players.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Course_work/wwwroot/pages/teams.html" beforeDir="false" afterPath="$PROJECT_DIR$/Course_work/wwwroot/pages/teams.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Course_work/wwwroot/pages/tournaments.html" beforeDir="false" afterPath="$PROJECT_DIR$/Course_work/wwwroot/pages/tournaments.html" afterDir="false" />
-    </list>
+    <list default="true" id="088cf991-a4d4-4b77-9577-df8393ffab56" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -198,7 +152,7 @@
       <workItem from="1772374223956" duration="377000" />
       <workItem from="1772374643616" duration="10706000" />
       <workItem from="1772485832740" duration="18276000" />
-      <workItem from="1772655818889" duration="292000" />
+      <workItem from="1772655818889" duration="1818000" />
     </task>
     <task id="LOCAL-00001" summary="Курсовая">
       <option name="closed" value="true" />
