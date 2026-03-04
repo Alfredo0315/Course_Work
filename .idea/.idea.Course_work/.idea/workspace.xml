@@ -10,6 +10,50 @@
   <component name="ChangeListManager">
     <list default="true" id="088cf991-a4d4-4b77-9577-df8393ffab56" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Course_work/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Course_work/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Course_work/Course_work.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Course_work/Course_work.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Course_work/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Course_work/Program.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Course_work/bin/Debug/net8.0/Course_work.deps.json" beforeDir="false" afterPath="$PROJECT_DIR$/Course_work/bin/Debug/net8.0/Course_work.deps.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Course_work/bin/Debug/net8.0/Course_work.dll" beforeDir="false" afterPath="$PROJECT_DIR$/Course_work/bin/Debug/net8.0/Course_work.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Course_work/bin/Debug/net8.0/Course_work.exe" beforeDir="false" afterPath="$PROJECT_DIR$/Course_work/bin/Debug/net8.0/Course_work.exe" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Course_work/bin/Debug/net8.0/Course_work.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/Course_work/bin/Debug/net8.0/Course_work.pdb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Course_work/bin/Debug/net8.0/Course_work.staticwebassets.endpoints.json" beforeDir="false" afterPath="$PROJECT_DIR$/Course_work/bin/Debug/net8.0/Course_work.staticwebassets.endpoints.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Course_work/bin/Debug/net8.0/Course_work.staticwebassets.runtime.json" beforeDir="false" afterPath="$PROJECT_DIR$/Course_work/bin/Debug/net8.0/Course_work.staticwebassets.runtime.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Course_work/bin/Debug/net8.0/Microsoft.OpenApi.dll" beforeDir="false" afterPath="$PROJECT_DIR$/Course_work/bin/Debug/net8.0/Microsoft.OpenApi.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Course_work/bin/Debug/net8.0/Swashbuckle.AspNetCore.Swagger.dll" beforeDir="false" afterPath="$PROJECT_DIR$/Course_work/bin/Debug/net8.0/Swashbuckle.AspNetCore.Swagger.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Course_work/bin/Debug/net8.0/Swashbuckle.AspNetCore.SwaggerGen.dll" beforeDir="false" afterPath="$PROJECT_DIR$/Course_work/bin/Debug/net8.0/Swashbuckle.AspNetCore.SwaggerGen.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Course_work/bin/Debug/net8.0/Swashbuckle.AspNetCore.SwaggerUI.dll" beforeDir="false" afterPath="$PROJECT_DIR$/Course_work/bin/Debug/net8.0/Swashbuckle.AspNetCore.SwaggerUI.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Course_work/obj/Course_work.csproj.nuget.dgspec.json" beforeDir="false" afterPath="$PROJECT_DIR$/Course_work/obj/Course_work.csproj.nuget.dgspec.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Course_work/obj/Course_work.csproj.nuget.g.props" beforeDir="false" afterPath="$PROJECT_DIR$/Course_work/obj/Course_work.csproj.nuget.g.props" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Course_work/obj/Course_work.csproj.nuget.g.targets" beforeDir="false" afterPath="$PROJECT_DIR$/Course_work/obj/Course_work.csproj.nuget.g.targets" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Course_work/obj/Debug/net8.0/Course_work.AssemblyInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Course_work/obj/Debug/net8.0/Course_work.AssemblyInfo.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Course_work/obj/Debug/net8.0/Course_work.AssemblyInfoInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/Course_work/obj/Debug/net8.0/Course_work.AssemblyInfoInputs.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Course_work/obj/Debug/net8.0/Course_work.assets.cache" beforeDir="false" afterPath="$PROJECT_DIR$/Course_work/obj/Debug/net8.0/Course_work.assets.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Course_work/obj/Debug/net8.0/Course_work.csproj.AssemblyReference.cache" beforeDir="false" afterPath="$PROJECT_DIR$/Course_work/obj/Debug/net8.0/Course_work.csproj.AssemblyReference.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Course_work/obj/Debug/net8.0/Course_work.csproj.CoreCompileInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/Course_work/obj/Debug/net8.0/Course_work.csproj.CoreCompileInputs.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Course_work/obj/Debug/net8.0/Course_work.dll" beforeDir="false" afterPath="$PROJECT_DIR$/Course_work/obj/Debug/net8.0/Course_work.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Course_work/obj/Debug/net8.0/Course_work.genruntimeconfig.cache" beforeDir="false" afterPath="$PROJECT_DIR$/Course_work/obj/Debug/net8.0/Course_work.genruntimeconfig.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Course_work/obj/Debug/net8.0/Course_work.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/Course_work/obj/Debug/net8.0/Course_work.pdb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Course_work/obj/Debug/net8.0/apphost.exe" beforeDir="false" afterPath="$PROJECT_DIR$/Course_work/obj/Debug/net8.0/apphost.exe" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Course_work/obj/Debug/net8.0/ref/Course_work.dll" beforeDir="false" afterPath="$PROJECT_DIR$/Course_work/obj/Debug/net8.0/ref/Course_work.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Course_work/obj/Debug/net8.0/refint/Course_work.dll" beforeDir="false" afterPath="$PROJECT_DIR$/Course_work/obj/Debug/net8.0/refint/Course_work.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Course_work/obj/Debug/net8.0/rjimswa.dswa.cache.json" beforeDir="false" afterPath="$PROJECT_DIR$/Course_work/obj/Debug/net8.0/rjimswa.dswa.cache.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Course_work/obj/Debug/net8.0/rjsmcshtml.dswa.cache.json" beforeDir="false" afterPath="$PROJECT_DIR$/Course_work/obj/Debug/net8.0/rjsmcshtml.dswa.cache.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Course_work/obj/Debug/net8.0/rjsmrazor.dswa.cache.json" beforeDir="false" afterPath="$PROJECT_DIR$/Course_work/obj/Debug/net8.0/rjsmrazor.dswa.cache.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Course_work/obj/Debug/net8.0/rpswa.dswa.cache.json" beforeDir="false" afterPath="$PROJECT_DIR$/Course_work/obj/Debug/net8.0/rpswa.dswa.cache.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Course_work/obj/Debug/net8.0/staticwebassets.build.endpoints.json" beforeDir="false" afterPath="$PROJECT_DIR$/Course_work/obj/Debug/net8.0/staticwebassets.build.endpoints.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Course_work/obj/Debug/net8.0/staticwebassets.build.json" beforeDir="false" afterPath="$PROJECT_DIR$/Course_work/obj/Debug/net8.0/staticwebassets.build.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Course_work/obj/Debug/net8.0/staticwebassets.build.json.cache" beforeDir="false" afterPath="$PROJECT_DIR$/Course_work/obj/Debug/net8.0/staticwebassets.build.json.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Course_work/obj/Debug/net8.0/staticwebassets.development.json" beforeDir="false" afterPath="$PROJECT_DIR$/Course_work/obj/Debug/net8.0/staticwebassets.development.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Course_work/obj/project.assets.json" beforeDir="false" afterPath="$PROJECT_DIR$/Course_work/obj/project.assets.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Course_work/obj/project.nuget.cache" beforeDir="false" afterPath="$PROJECT_DIR$/Course_work/obj/project.nuget.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Course_work/obj/project.packagespec.json" beforeDir="false" afterPath="$PROJECT_DIR$/Course_work/obj/project.packagespec.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Course_work/obj/rider.project.model.nuget.info" beforeDir="false" afterPath="$PROJECT_DIR$/Course_work/obj/rider.project.model.nuget.info" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Course_work/obj/rider.project.restore.info" beforeDir="false" afterPath="$PROJECT_DIR$/Course_work/obj/rider.project.restore.info" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Course_work/wwwroot/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/Course_work/wwwroot/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Course_work/wwwroot/pages/matches.html" beforeDir="false" afterPath="$PROJECT_DIR$/Course_work/wwwroot/pages/matches.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Course_work/wwwroot/pages/players.html" beforeDir="false" afterPath="$PROJECT_DIR$/Course_work/wwwroot/pages/players.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Course_work/wwwroot/pages/teams.html" beforeDir="false" afterPath="$PROJECT_DIR$/Course_work/wwwroot/pages/teams.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Course_work/wwwroot/pages/tournaments.html" beforeDir="false" afterPath="$PROJECT_DIR$/Course_work/wwwroot/pages/tournaments.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -18,6 +62,13 @@
   </component>
   <component name="DpaMonitoringSettings">
     <option name="firstShow" value="false" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="HTML File" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -30,7 +81,7 @@
 }</component>
   <component name="GithubPullRequestsUISettings">{
   &quot;selectedUrlAndAccountId&quot;: {
-    &quot;url&quot;: &quot;https://github.com/Alfredo0315/Esport.git&quot;,
+    &quot;url&quot;: &quot;https://github.com/Alfredo0315/Course_Work.git&quot;,
     &quot;accountId&quot;: &quot;13eafadb-2daa-4829-8acd-fd7cbe28f239&quot;
   }
 }</component>
@@ -51,6 +102,10 @@
     <setting file="file://$PROJECT_DIR$/Course_work/Models/Team.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Course_work/Models/Tournament.cs" root0="FORCE_HIGHLIGHTING" />
   </component>
+  <component name="MetaFilesCheckinStateConfiguration" checkMetaFiles="true" />
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
+  </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 7
 }</component>
@@ -62,9 +117,12 @@
   <component name="PropertiesComponent">{
   &quot;keyToString&quot;: {
     &quot;.NET Launch Settings Profile.Course_work: http.executor&quot;: &quot;Run&quot;,
+    &quot;DefaultHtmlFileTemplate&quot;: &quot;HTML File&quot;,
+    &quot;JavaScript Debug.Diagnostic.html.executor&quot;: &quot;Run&quot;,
     &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
     &quot;git-widget-placeholder&quot;: &quot;main&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
@@ -82,6 +140,9 @@
   }
 }</component>
   <component name="RunManager" selected=".NET Launch Settings Profile.Course_work: http">
+    <configuration name="Diagnostic.html" type="JavascriptDebugType" temporary="true" nameIsGenerated="true" uri="http://localhost:63342/Course_work/Course_work/wwwroot/pages/Diagnostic.html" useBuiltInWebServerPort="true">
+      <method v="2" />
+    </configuration>
     <configuration name="Course_work: http" type="LaunchSettings" factoryName=".NET Launch Settings Profile">
       <option name="LAUNCH_PROFILE_PROJECT_FILE_PATH" value="$PROJECT_DIR$/Course_work/Course_work.csproj" />
       <option name="LAUNCH_PROFILE_TFM" value="net8.0" />
@@ -114,6 +175,11 @@
         <option name="Build" />
       </method>
     </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="JavaScript Debug.Diagnostic.html" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -127,19 +193,41 @@
       <workItem from="1770282878607" duration="1156000" />
       <workItem from="1770284069583" duration="433000" />
       <workItem from="1770284535145" duration="2639000" />
+      <workItem from="1770309024134" duration="887000" />
+      <workItem from="1770309986416" duration="1087000" />
+      <workItem from="1772374223956" duration="377000" />
+      <workItem from="1772374643616" duration="10706000" />
+      <workItem from="1772485832740" duration="18276000" />
+      <workItem from="1772655818889" duration="292000" />
     </task>
+    <task id="LOCAL-00001" summary="Курсовая">
+      <option name="closed" value="true" />
+      <created>1770309355534</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1770309355534</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
+  <component name="UnityCheckinConfiguration" checkUnsavedScenes="true" />
   <component name="UnityProjectConfiguration" hasMinimizedUI="false" />
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">
       <map>
         <entry key="MAIN">
           <value>
-            <State />
+            <State>
+              <option name="CUSTOM_BOOLEAN_PROPERTIES">
+                <map>
+                  <entry key="Show.Git.Branches" value="true" />
+                </map>
+              </option>
+            </State>
           </value>
         </entry>
       </map>
@@ -147,6 +235,8 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
+    <MESSAGE value="Курсовая" />
+    <option name="LAST_COMMIT_MESSAGE" value="Курсовая" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

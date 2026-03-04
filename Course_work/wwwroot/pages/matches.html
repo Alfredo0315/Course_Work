@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="../css/responsive.css">
 </head>
 <body>
-<!-- Header -->
+
 <header class="header">
     <div class="container">
         <div class="header-content">
@@ -33,7 +33,7 @@
     <div class="container">
         <h1 class="section-title">Матчи</h1>
 
-     
+      
         <div class="tabs" style="margin-bottom: 30px; display: flex; gap: 10px; flex-wrap: wrap;">
             <button class="btn active" id="tab-all" onclick="showMatches('all')">Все матчи</button>
             <button class="btn btn-secondary" id="tab-upcoming" onclick="showMatches('upcoming')">Предстоящие</button>
@@ -48,23 +48,24 @@
                 <tr>
                     <th>Дата и время</th>
                     <th>Турнир</th>
+                    <th>Команды</th>
                     <th>Статус</th>
                     <th>Счёт</th>
                 </tr>
                 </thead>
                 <tbody id="matches-tbody">
-                <tr><td colspan="4" style="text-align: center;">Загрузка...</td></tr>
+                <tr><td colspan="5" style="text-align: center;">Загрузка...</td></tr>
                 </tbody>
             </table>
         </div>
     </div>
 </main>
 
-
+<!-- Footer -->
 <footer class="footer">
     <div class="container">
         <div class="footer-content">
-            <p>&copy; 2024 Esports.ru - Информационный портал о киберспорте</p>
+            <p>&copy; 2026 Esports.ru - Информационный портал о киберспорте</p>
             <div class="footer-links">
                 <a href="#">О проекте</a>
                 <a href="#">Контакты</a>
@@ -78,10 +79,12 @@
 <script>
     let allMatches = [];
     let tournaments = {};
+    let teams = {};
     let currentFilter = 'all';
 
     document.addEventListener('DOMContentLoaded', async () => {
         await loadTournamentsCache();
+        await loadTeamsCache();
         await loadMatches();
     });
 
@@ -91,11 +94,32 @@
             const tournamentsList = await api.getTournaments();
             if (tournamentsList && tournamentsList.length > 0) {
                 tournamentsList.forEach(t => {
-                    tournaments[t.id_Tournament] = t;
+                    const id = t.iD_Tournament || t.ID_Tournament || t.id_Tournament;
+                    if (id) {
+                        tournaments[id] = t;
+                    }
                 });
             }
         } catch (error) {
             console.error('Error loading tournaments cache:', error);
+        }
+    }
+
+    
+    async function loadTeamsCache() {
+        try {
+            const teamsList = await api.getTeams();
+            if (teamsList && teamsList.length > 0) {
+                teamsList.forEach(t => {
+                    const id = t.iD_Teams || t.ID_Teams || t.id_Teams;
+                    if (id) {
+                        teams[id] = t;
+                    }
+                });
+                console.log('Loaded teams cache:', Object.keys(teams).length);
+            }
+        } catch (error) {
+            console.error('Error loading teams cache:', error);
         }
     }
 
@@ -106,21 +130,47 @@
         return tournament ? tournament.name : `Турнир #${tournamentId}`;
     }
 
+    
+    async function getTeamsForTournament(tournamentId) {
+        if (!tournamentId) return [];
+
+        try {
+           
+            const response = await fetch(`${api.baseUrl}/Teams/ByTournament/${tournamentId}`);
+            if (response.ok) {
+                return await response.json();
+            }
+        } catch (error) {
+            console.error('Error loading teams for tournament:', error);
+        }
+
+        return [];
+    }
+
     async function loadMatches() {
         try {
             allMatches = await api.getMatches();
 
             if (!allMatches || allMatches.length === 0) {
                 document.getElementById('matches-tbody').innerHTML =
-                    '<tr><td colspan="4" class="error-message">Матчи не найдены</td></tr>';
+                    '<tr><td colspan="5" class="error-message">Матчи не найдены</td></tr>';
                 return;
+            }
+
+           
+            for (let match of allMatches) {
+                const tournamentId = match.iD_Tournament || match.ID_Tournament || match.id_Tournament;
+                if (tournamentId && !match.teamsLoaded) {
+                    match.tournamentTeams = await getTeamsForTournament(tournamentId);
+                    match.teamsLoaded = true;
+                }
             }
 
             displayMatches(allMatches);
         } catch (error) {
             console.error('Error loading matches:', error);
             document.getElementById('matches-tbody').innerHTML =
-                '<tr><td colspan="4" class="error-message">Ошибка загрузки матчей</td></tr>';
+                '<tr><td colspan="5" class="error-message">Ошибка загрузки матчей</td></tr>';
         }
     }
 
@@ -135,7 +185,7 @@
         document.getElementById(`tab-${filter}`).classList.add('active');
         document.getElementById(`tab-${filter}`).classList.remove('btn-secondary');
 
-        
+      
         let filtered = allMatches;
         if (filter === 'upcoming') {
             filtered = allMatches.filter(m => m.status === 'Запланирован');
@@ -151,7 +201,7 @@
     function displayMatches(matches) {
         if (matches.length === 0) {
             document.getElementById('matches-tbody').innerHTML =
-                '<tr><td colspan="4" style="text-align: center; color: var(--text-secondary);">Матчи не найдены</td></tr>';
+                '<tr><td colspan="5" style="text-align: center; color: var(--text-secondary);">Матчи не найдены</td></tr>';
             return;
         }
 
@@ -165,13 +215,25 @@
             const statusClass = match.status === 'Идет' ? 'live' :
                 match.status === 'Запланирован' ? 'upcoming' : '';
 
-           
-            const tournamentName = getTournamentName(match.id_Tournament || match.ID_Tournament);
+            const tournamentId = match.iD_Tournament || match.ID_Tournament || match.id_Tournament;
+            const tournamentName = getTournamentName(tournamentId);
+
+          
+            let teamsDisplay = 'TBD';
+            if (match.tournamentTeams && match.tournamentTeams.length >= 2) {
+              
+                const team1 = match.tournamentTeams[0].name;
+                const team2 = match.tournamentTeams[1].name;
+                teamsDisplay = `${team1} vs ${team2}`;
+            } else if (match.tournamentTeams && match.tournamentTeams.length === 1) {
+                teamsDisplay = match.tournamentTeams[0].name;
+            }
 
             return `
                     <tr>
                         <td>${formatDateTime(match.match_date)}</td>
                         <td>${tournamentName}</td>
+                        <td><strong>${teamsDisplay}</strong></td>
                         <td><span class="match-status ${statusClass}">${match.status}</span></td>
                         <td><strong>${match.score || 'TBD'}</strong></td>
                     </tr>
