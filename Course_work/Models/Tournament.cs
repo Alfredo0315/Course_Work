@@ -2,9 +2,6 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 namespace Course_Work.Models
 {
-    /// <summary>
-    /// Модель турнира
-    /// </summary>
     [Table("Tournament")]
     public class Tournament
     {
@@ -32,9 +29,13 @@ namespace Course_Work.Models
 
         [MaxLength(1000)]
         public string? Description { get; set; }
+        [Column("ID_Games")]
+        public int? ID_Games { get; set; }
 
-        // Навигационные свойства
-        public virtual ICollection<Team> Teams { get; set; } = new List<Team>();
+        [ForeignKey("ID_Games")]
+        public virtual Game? Game { get; set; }
+      
+        public virtual ICollection<TeamsTournament> TeamsTournaments { get; set; } = new List<TeamsTournament>();
         public virtual ICollection<Match> Matches { get; set; } = new List<Match>();
     }
 }

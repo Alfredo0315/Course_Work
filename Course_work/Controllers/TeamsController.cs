@@ -55,10 +55,11 @@ namespace Course_Work.Controllers
         {
             try
             {
-                var teams = await _context.Teams
-                    .Where(t => t.ID_Tournament == tournamentId)
+                var teams = await _context.TeamsTournaments
+                    .Where(tt => tt.ID_Tournament == tournamentId)
+                    .Select(tt => tt.Team)
                     .ToListAsync();
-                
+        
                 return Ok(teams);
             }
             catch (Exception ex)

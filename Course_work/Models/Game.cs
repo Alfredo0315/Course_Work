@@ -2,9 +2,6 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 namespace Course_Work.Models
 {
-    /// <summary>
-    /// Модель игры
-    /// </summary>
     [Table("Games")]
     public class Game
     {
@@ -24,8 +21,7 @@ namespace Course_Work.Models
         public string? Platform { get; set; }
 
         public int? Release_year { get; set; }
-
-        // Навигационные свойства
+        
         public virtual ICollection<GamesNews> GamesNews { get; set; } = new List<GamesNews>();
         public virtual ICollection<PlayersGames> PlayersGames { get; set; } = new List<PlayersGames>();
     }

@@ -1,10 +1,8 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+
 namespace Course_Work.Models
 {
-    /// <summary>
-    /// Модель команды
-    /// </summary>
     [Table("Teams")]
     public class Team
     {
@@ -24,14 +22,9 @@ namespace Course_Work.Models
 
         [Column(TypeName = "decimal(18,2)")]
         public decimal Prize_pool { get; set; } = 0;
-
-        [Column("ID_Tournament")]
-        public int? ID_Tournament { get; set; }
-
-        // Навигационные свойства
-        [ForeignKey("ID_Tournament")]
-        public virtual Tournament? Tournament { get; set; }
-
+        
         public virtual ICollection<Player> Players { get; set; } = new List<Player>();
+        public virtual ICollection<TeamsTournament> TeamsTournaments { get; set; } = new List<TeamsTournament>();
+        public virtual ICollection<TeamsMatch> TeamsMatches { get; set; } = new List<TeamsMatch>();
     }
 }

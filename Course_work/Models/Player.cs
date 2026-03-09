@@ -2,9 +2,6 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 namespace Course_Work.Models
 {
-    /// <summary>
-    /// Модель игрока
-    /// </summary>
     [Table("Players")]
     public class Player
     {
@@ -34,8 +31,7 @@ namespace Course_Work.Models
 
         [Column("ID_Teams")]
         public int? ID_Teams { get; set; }
-
-        // Навигационные свойства
+        
         [ForeignKey("ID_Teams")]
         public virtual Team? Team { get; set; }
 

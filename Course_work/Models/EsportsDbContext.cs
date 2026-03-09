@@ -1,68 +1,36 @@
 using Microsoft.EntityFrameworkCore;
+using Course_Work.Models;
 
 namespace Course_Work.Models
 {
-    /// <summary>
-    /// Контекст базы данных для приложения киберспортивных соревнований
-    /// </summary>
     public class EsportsDbContext : DbContext
     {
-        public EsportsDbContext(DbContextOptions<EsportsDbContext> options)
-            : base(options)
-        {
-        }
+        public EsportsDbContext(DbContextOptions<EsportsDbContext> options) : base(options) { }
 
-        // DbSet'ы для всех таблиц
-        public DbSet<Player> Players { get; set; }
-        public DbSet<Team> Teams { get; set; }
-        public DbSet<Tournament> Tournament { get; set; }
-        public DbSet<Match> Matches { get; set; }
+        // Основные таблицы
         public DbSet<Game> Games { get; set; }
         public DbSet<News> News { get; set; }
-        public DbSet<PlayersGames> Players_Games { get; set; }
-        public DbSet<GamesNews> Games_News { get; set; }
+        public DbSet<Tournament> Tournaments { get; set; }
+        public DbSet<Team> Teams { get; set; }
+        public DbSet<Player> Players { get; set; }
+        public DbSet<Match> Matches { get; set; }
+
+        // Промежуточные таблицы 
+        public DbSet<GamesNews> GamesNews { get; set; }
+        public DbSet<PlayersGames> PlayersGames { get; set; }
+        public DbSet<TeamsTournament> TeamsTournaments { get; set; }
+        public DbSet<TeamsMatch> TeamsMatches { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
-            // Настройка связей и индексов
-            
-            // Player - Team (многие к одному)
-            modelBuilder.Entity<Player>()
-                .HasOne(p => p.Team)
-                .WithMany(t => t.Players)
-                .HasForeignKey(p => p.ID_Teams)
-                .OnDelete(DeleteBehavior.SetNull);
+            // ========================================
+            // Games_News
+            // ========================================
+            modelBuilder.Entity<GamesNews>()
+                .HasKey(gn => new { gn.ID_Games, gn.ID_News });
 
-            // Team - Tournament (многие к одному)
-            modelBuilder.Entity<Team>()
-                .HasOne(t => t.Tournament)
-                .WithMany(tour => tour.Teams)
-                .HasForeignKey(t => t.ID_Tournament)
-                .OnDelete(DeleteBehavior.SetNull);
-
-            // Match - Tournament (многие к одному)
-            modelBuilder.Entity<Match>()
-                .HasOne(m => m.Tournament)
-                .WithMany(t => t.Matches)
-                .HasForeignKey(m => m.ID_Tournament)
-                .OnDelete(DeleteBehavior.Cascade);
-
-            // Players_Games (многие ко многим)
-            modelBuilder.Entity<PlayersGames>()
-                .HasOne(pg => pg.Player)
-                .WithMany(p => p.PlayersGames)
-                .HasForeignKey(pg => pg.ID_Players)
-                .OnDelete(DeleteBehavior.Cascade);
-
-            modelBuilder.Entity<PlayersGames>()
-                .HasOne(pg => pg.Game)
-                .WithMany(g => g.PlayersGames)
-                .HasForeignKey(pg => pg.ID_Games)
-                .OnDelete(DeleteBehavior.Cascade);
-
-            // Games_News (многие ко многим)
             modelBuilder.Entity<GamesNews>()
                 .HasOne(gn => gn.Game)
                 .WithMany(g => g.GamesNews)
@@ -75,18 +43,59 @@ namespace Course_Work.Models
                 .HasForeignKey(gn => gn.ID_News)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            // Настройка индексов для оптимизации запросов
-            modelBuilder.Entity<Player>()
-                .HasIndex(p => p.Nickname);
+            // ========================================
+            // Players_Games
+            // ========================================
+            modelBuilder.Entity<PlayersGames>()
+                .HasKey(pg => new { pg.ID_Players, pg.ID_Games });
 
-            modelBuilder.Entity<Player>()
-                .HasIndex(p => p.Country);
+            modelBuilder.Entity<PlayersGames>()
+                .HasOne(pg => pg.Player)
+                .WithMany(p => p.PlayersGames)
+                .HasForeignKey(pg => pg.ID_Players)
+                .OnDelete(DeleteBehavior.Cascade);
 
-            modelBuilder.Entity<Team>()
-                .HasIndex(t => t.Name);
+            modelBuilder.Entity<PlayersGames>()
+                .HasOne(pg => pg.Game)
+                .WithMany(g => g.PlayersGames)
+                .HasForeignKey(pg => pg.ID_Games)
+                .OnDelete(DeleteBehavior.Cascade);
 
-            modelBuilder.Entity<Tournament>()
-                .HasIndex(t => t.Start_date);
+            // ========================================
+            // Teams_Tournament
+            // ========================================
+            modelBuilder.Entity<TeamsTournament>()
+                .HasKey(tt => new { tt.ID_Teams, tt.ID_Tournament });
+
+            modelBuilder.Entity<TeamsTournament>()
+                .HasOne(tt => tt.Team)
+                .WithMany(t => t.TeamsTournaments)
+                .HasForeignKey(tt => tt.ID_Teams)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<TeamsTournament>()
+                .HasOne(tt => tt.Tournament)
+                .WithMany(t => t.TeamsTournaments)
+                .HasForeignKey(tt => tt.ID_Tournament)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            // ========================================
+            // Teams_Matches
+            // ========================================
+            modelBuilder.Entity<TeamsMatch>()
+                .HasKey(tm => new { tm.ID_Teams, tm.ID_Matches });
+
+            modelBuilder.Entity<TeamsMatch>()
+                .HasOne(tm => tm.Team)
+                .WithMany(t => t.TeamsMatches)
+                .HasForeignKey(tm => tm.ID_Teams)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<TeamsMatch>()
+                .HasOne(tm => tm.Match)
+                .WithMany(m => m.TeamsMatches)
+                .HasForeignKey(tm => tm.ID_Matches)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

@@ -2,9 +2,6 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 namespace Course_Work.Models
 {
-    /// <summary>
-    /// Модель новости
-    /// </summary>
     [Table("News")]
     public class News
     {
@@ -27,8 +24,7 @@ namespace Course_Work.Models
 
         [Column(TypeName = "nvarchar(max)")]
         public string? Description { get; set; }
-
-        // Навигационные свойства
+        
         public virtual ICollection<GamesNews> GamesNews { get; set; } = new List<GamesNews>();
     }
 }

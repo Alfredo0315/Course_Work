@@ -15,31 +15,56 @@ namespace Course_Work.Controllers
             _context = context;
         }
 
-        
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Player>>> GetPlayers()
+        public async Task<ActionResult<IEnumerable<object>>> GetPlayers()
         {
             try
             {
                 var players = await _context.Players
+                    .Include(p => p.Team)
                     .OrderByDescending(p => p.Prize_pool)
                     .ToListAsync();
-                
-                return Ok(players);
+                var result = players.Select(p => new
+                {
+                    p.ID_Players,
+                    p.Nickname,
+                    p.Name,
+                    p.Surname,
+                    p.Country,
+                    p.Date_of_birth,
+                    p.Prize_pool,
+                    p.ID_Teams,
+                    TeamName = p.Team?.Name ?? "Без команды"
+                });
+        
+                return Ok(result);
             }
             catch (Exception ex)
             {
                 return StatusCode(500, new { message = "Ошибка загрузки игроков", error = ex.Message });
             }
         }
-
-       
+        
         [HttpGet("{id}")]
-        public async Task<ActionResult<Player>> GetPlayer(int id)
+        public async Task<ActionResult<object>> GetPlayer(int id)
         {
             try
             {
-                var player = await _context.Players.FindAsync(id);
+                var player = await _context.Players
+                    .Where(p => p.ID_Players == id)
+                    .Select(p => new
+                    {
+                        p.ID_Players,
+                        p.Nickname,
+                        p.Name,
+                        p.Surname,
+                        p.Country,
+                        p.Date_of_birth,
+                        p.Prize_pool,
+                        p.ID_Teams,
+                        TeamName = p.Team != null ? p.Team.Name : "Без команды"
+                    })
+                    .FirstOrDefaultAsync();
                 
                 if (player == null)
                 {
@@ -54,7 +79,6 @@ namespace Course_Work.Controllers
             }
         }
 
-        
         [HttpGet("ByTeam/{teamId}")]
         public async Task<ActionResult<IEnumerable<Player>>> GetPlayersByTeam(int teamId)
         {
@@ -72,7 +96,6 @@ namespace Course_Work.Controllers
             }
         }
 
-        
         [HttpGet("ByCountry/{country}")]
         public async Task<ActionResult<IEnumerable<Player>>> GetPlayersByCountry(string country)
         {
@@ -90,15 +113,24 @@ namespace Course_Work.Controllers
             }
         }
 
-       
         [HttpGet("TopByPrize")]
-        public async Task<ActionResult<IEnumerable<Player>>> GetTopPlayersByPrize([FromQuery] int count = 10)
+        public async Task<ActionResult<IEnumerable<object>>> GetTopPlayersByPrize([FromQuery] int count = 10)
         {
             try
             {
                 var players = await _context.Players
                     .OrderByDescending(p => p.Prize_pool)
                     .Take(count)
+                    .Select(p => new
+                    {
+                        p.ID_Players,
+                        p.Nickname,
+                        p.Name,
+                        p.Surname,
+                        p.Country,
+                        p.Prize_pool,
+                        TeamName = p.Team != null ? p.Team.Name : "Без команды"
+                    })
                     .ToListAsync();
                 
                 return Ok(players);
@@ -109,7 +141,6 @@ namespace Course_Work.Controllers
             }
         }
 
-       
         [HttpPost]
         public async Task<ActionResult<Player>> CreatePlayer(Player player)
         {
@@ -126,7 +157,6 @@ namespace Course_Work.Controllers
             }
         }
 
-        
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdatePlayer(int id, Player player)
         {
@@ -160,7 +190,6 @@ namespace Course_Work.Controllers
             return NoContent();
         }
 
-        
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeletePlayer(int id)
         {

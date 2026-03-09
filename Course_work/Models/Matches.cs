@@ -1,10 +1,8 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+
 namespace Course_Work.Models
 {
-    /// <summary>
-    /// Модель матча
-    /// </summary>
     [Table("Matches")]
     public class Match
     {
@@ -15,6 +13,8 @@ namespace Course_Work.Models
 
         [Required]
         public DateTime Match_date { get; set; }
+        
+        public TimeSpan Match_time { get; set; }
 
         [MaxLength(50)]
         public string? Score { get; set; }
@@ -25,9 +25,10 @@ namespace Course_Work.Models
         [Required]
         [Column("ID_Tournament")]
         public int ID_Tournament { get; set; }
-
-        // Навигационные свойства
+        
         [ForeignKey("ID_Tournament")]
         public virtual Tournament Tournament { get; set; } = null!;
+        
+        public virtual ICollection<TeamsMatch> TeamsMatches { get; set; } = new List<TeamsMatch>();
     }
 }

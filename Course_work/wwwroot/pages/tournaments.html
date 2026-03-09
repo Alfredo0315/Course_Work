@@ -55,7 +55,7 @@
 
 <script src="../js/api.js"></script>
 <script>
-    let games = {}; // Кеш игр
+    let games = {}; 
 
     document.addEventListener('DOMContentLoaded', async () => {
         await loadGamesCache();
@@ -114,11 +114,11 @@
                     <div class="card">
                         <h3 class="card-title">${tournament.name}</h3>
                         <div class="card-content">
-                            <p><strong>🎮 Дисциплина:</strong> ${gameName}</p>
-                            <p><strong>📅 Начало:</strong> ${formatDate(tournament.start_date)}</p>
-                            <p><strong>🏁 Окончание:</strong> ${formatDate(tournament.end_date)}</p>
-                            <p><strong>🌍 Страна:</strong> ${tournament.location_of_the_event || 'N/A'}</p>
-                            <p><strong>💰 Призовой фонд:</strong> <span style="color: var(--primary-color); font-weight: 600;">${formatCurrency(tournament.prize_pool || 0)}</span></p>
+                            <p><strong> Дисциплина:</strong> ${gameName}</p>
+                            <p><strong> Начало:</strong> ${formatDate(tournament.start_date)}</p>
+                            <p><strong> Окончание:</strong> ${formatDate(tournament.end_date)}</p>
+                            <p><strong> Страна:</strong> ${tournament.location_of_the_event || 'N/A'}</p>
+                            <p><strong> Призовой фонд:</strong> <span style="color: var(--primary-color); font-weight: 600;">${formatCurrency(tournament.prize_pool || 0)}</span></p>
                         </div>
                     </div>
                 `;
