@@ -28,12 +28,10 @@
     </div>
 </header>
 
-
 <main class="main-content">
     <div class="container">
         <h1 class="section-title">Киберспортсмены</h1>
 
-        
         <div class="filters" style="margin-bottom: 30px; display: flex; gap: 15px;">
             <select id="country-filter" class="filter-select" style="padding: 10px; background: var(--card-bg); color: var(--text-primary); border: 1px solid var(--border-color); border-radius: 6px;">
                 <option value="">Все страны</option>
@@ -41,7 +39,6 @@
             <button id="sort-prize" class="btn btn-secondary">Сортировать по призовым</button>
         </div>
 
-        
         <div class="table-container">
             <table id="players-table">
                 <thead>
@@ -62,7 +59,6 @@
     </div>
 </main>
 
-
 <footer class="footer">
     <div class="container">
         <div class="footer-content">
@@ -79,22 +75,12 @@
 <script src="../js/api.js"></script>
 <script>
     let allPlayers = [];
-    let allTeams = [];
     let sortByPrize = false;
 
     document.addEventListener('DOMContentLoaded', async () => {
-        await loadTeams();
         await loadPlayers();
         setupFilters();
     });
-
-    async function loadTeams() {
-        try {
-            allTeams = await api.getTeams();
-        } catch (error) {
-            console.error('Error loading teams:', error);
-        }
-    }
 
     async function loadPlayers() {
         try {
@@ -121,23 +107,17 @@
             : players;
 
         const playersHTML = sorted.map((player, index) => `
-                <tr>
-                    <td style="color: var(--primary-color); font-weight: 700;">#${index + 1}</td>
-                    <td><strong>${player.nickname}</strong></td>
-                    <td>${player.name || ''} ${player.surname || ''}</td>
-                    <td>${player.country || 'N/A'}</td>
-                    <td>${getTeamName(player.id_Teams)}</td>
-                    <td style="color: var(--primary-color); font-weight: 600;">${formatCurrency(player.prize_pool || 0)}</td>
-                </tr>
-            `).join('');
+            <tr>
+                <td style="color: var(--primary-color); font-weight: 700;">#${index + 1}</td>
+                <td><strong>${player.nickname}</strong></td>
+                <td>${player.name || ''} ${player.surname || ''}</td>
+                <td>${player.country || 'N/A'}</td>
+                <td>${player.teamName || 'Без команды'}</td>
+                <td style="color: var(--primary-color); font-weight: 600;">${formatCurrency(player.prize_pool || 0)}</td>
+            </tr>
+        `).join('');
 
         document.getElementById('players-tbody').innerHTML = playersHTML;
-    }
-
-    function getTeamName(teamId) {
-        if (!teamId) return 'Без команды';
-        const team = allTeams.find(t => t.id_Teams === teamId);
-        return team ? team.name : `Команда #${teamId}`;
     }
 
     function populateCountryFilter() {

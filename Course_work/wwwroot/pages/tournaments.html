@@ -28,17 +28,15 @@
     </div>
 </header>
 
-
 <main class="main-content">
     <div class="container">
         <h1 class="section-title">Турниры</h1>
-        
+
         <div id="tournaments-grid" class="grid-3">
             <div class="loading">Загрузка турниров...</div>
         </div>
     </div>
 </main>
-
 
 <footer class="footer">
     <div class="container">
@@ -55,32 +53,9 @@
 
 <script src="../js/api.js"></script>
 <script>
-    let games = {}; 
-
     document.addEventListener('DOMContentLoaded', async () => {
-        await loadGamesCache();
         await loadTournaments();
     });
-
-
-    async function loadGamesCache() {
-        try {
-            const gamesList = await api.getGames();
-            if (gamesList && gamesList.length > 0) {
-                gamesList.forEach(g => {
-                    games[g.id_Games] = g;
-                });
-            }
-        } catch (error) {
-            console.error('Error loading games cache:', error);
-        }
-    }
-    
-    function getGameName(gameId) {
-        if (!gameId) return 'N/A';
-        const game = games[gameId];
-        return game ? game.name : 'N/A';
-    }
 
     async function loadTournaments() {
         try {
@@ -107,22 +82,18 @@
             return dateB - dateA;
         });
 
-        const tournamentsHTML = sorted.map(tournament => {
-            const gameName = getGameName(tournament.id_Games || tournament.ID_Games || tournament.Id_Games);
-
-            return `
-                    <div class="card">
-                        <h3 class="card-title">${tournament.name}</h3>
-                        <div class="card-content">
-                            <p><strong> Дисциплина:</strong> ${gameName}</p>
-                            <p><strong> Начало:</strong> ${formatDate(tournament.start_date)}</p>
-                            <p><strong> Окончание:</strong> ${formatDate(tournament.end_date)}</p>
-                            <p><strong> Страна:</strong> ${tournament.location_of_the_event || 'N/A'}</p>
-                            <p><strong> Призовой фонд:</strong> <span style="color: var(--primary-color); font-weight: 600;">${formatCurrency(tournament.prize_pool || 0)}</span></p>
-                        </div>
-                    </div>
-                `;
-        }).join('');
+        const tournamentsHTML = sorted.map(tournament => `
+            <div class="card">
+                <h3 class="card-title">${tournament.name}</h3>
+                <div class="card-content">
+                    <p><strong> Дисциплина:</strong> ${tournament.gameName || 'N/A'}</p>
+                    <p><strong> Начало:</strong> ${formatDate(tournament.start_date)}</p>
+                    <p><strong> Окончание:</strong> ${formatDate(tournament.end_date)}</p>
+                    <p><strong> Страна:</strong> ${tournament.location_of_the_event || 'N/A'}</p>
+                    <p><strong> Призовой фонд:</strong> <span style="color: var(--primary-color); font-weight: 600;">${formatCurrency(tournament.prize_pool || 0)}</span></p>
+                </div>
+            </div>
+        `).join('');
 
         document.getElementById('tournaments-grid').innerHTML = tournamentsHTML;
     }

@@ -9,29 +9,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="088cf991-a4d4-4b77-9577-df8393ffab56" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/Course_work/Models/TeamsMatch.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Course_work/Models/TeamsTournament.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.Course_work/.idea/indexLayout.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Course_work/.idea/indexLayout.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Course_work/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Course_work/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Course_work/Controllers/MatchesController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Course_work/Controllers/MatchesController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Course_work/Controllers/PlayersController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Course_work/Controllers/PlayersController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Course_work/Controllers/TeamsController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Course_work/Controllers/TeamsController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Course_work/Controllers/TournamentsController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Course_work/Controllers/TournamentsController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Course_work/Models/EsportsDbContext.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Course_work/Models/EsportsDbContext.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Course_work/Models/Game.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Course_work/Models/Game.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Course_work/Models/Games_News.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Course_work/Models/Games_News.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Course_work/Models/Matches.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Course_work/Models/Matches.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Course_work/Models/News.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Course_work/Models/News.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Course_work/Models/Player.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Course_work/Models/Player.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Course_work/Models/Players_Games.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Course_work/Models/Players_Games.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Course_work/Models/Team.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Course_work/Models/Team.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Course_work/Models/Tournament.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Course_work/Models/Tournament.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Course_work/wwwroot/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/Course_work/wwwroot/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Course_work/wwwroot/js/main.js" beforeDir="false" afterPath="$PROJECT_DIR$/Course_work/wwwroot/js/main.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Course_work/wwwroot/pages/matches.html" beforeDir="false" afterPath="$PROJECT_DIR$/Course_work/wwwroot/pages/matches.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Course_work/wwwroot/pages/news.html" beforeDir="false" afterPath="$PROJECT_DIR$/Course_work/wwwroot/pages/news.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Course_work/wwwroot/pages/teams.html" beforeDir="false" afterPath="$PROJECT_DIR$/Course_work/wwwroot/pages/teams.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Course_work/wwwroot/pages/tournaments.html" beforeDir="false" afterPath="$PROJECT_DIR$/Course_work/wwwroot/pages/tournaments.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -92,32 +70,33 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;.NET Launch Settings Profile.Course_work: http.executor&quot;: &quot;Run&quot;,
-    &quot;.NET Launch Settings Profile.Course_work: https.executor&quot;: &quot;Run&quot;,
-    &quot;DefaultHtmlFileTemplate&quot;: &quot;HTML File&quot;,
-    &quot;JavaScript Debug.Diagnostic.html.executor&quot;: &quot;Run&quot;,
-    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    ".NET Launch Settings Profile.Course_work: http.executor": "Run",
+    ".NET Launch Settings Profile.Course_work: https.executor": "Run",
+    "DefaultHtmlFileTemplate": "HTML File",
+    "JavaScript Debug.Diagnostic.html.executor": "Run",
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "main",
+    "ignore.virus.scanning.warn.message": "true",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "preferences.lookFeel",
+    "vue.rearranger.settings.migration": "true"
   },
-  &quot;keyToStringList&quot;: {
-    &quot;DatabaseDriversLRU&quot;: [
-      &quot;sqlserver.localdb&quot;,
-      &quot;sqlserver&quot;
+  "keyToStringList": {
+    "DatabaseDriversLRU": [
+      "sqlserver.localdb",
+      "sqlserver"
     ]
   }
-}</component>
+}]]></component>
   <component name="RunManager" selected=".NET Launch Settings Profile.Course_work: http">
     <configuration name="Diagnostic.html" type="JavascriptDebugType" temporary="true" nameIsGenerated="true" uri="http://localhost:63342/Course_work/Course_work/wwwroot/pages/Diagnostic.html" useBuiltInWebServerPort="true">
       <method v="2" />
@@ -180,6 +159,9 @@
       <workItem from="1772655818889" duration="2393000" />
       <workItem from="1773072892297" duration="458000" />
       <workItem from="1773076204032" duration="10851000" />
+      <workItem from="1773089498665" duration="376000" />
+      <workItem from="1773139414089" duration="508000" />
+      <workItem from="1773139962867" duration="740000" />
     </task>
     <task id="LOCAL-00001" summary="Курсовая">
       <option name="closed" value="true" />
