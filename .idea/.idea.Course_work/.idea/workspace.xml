@@ -8,7 +8,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="088cf991-a4d4-4b77-9577-df8393ffab56" name="Changes" comment="" />
+    <list default="true" id="088cf991-a4d4-4b77-9577-df8393ffab56" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.Course_work/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Course_work/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Course_work/wwwroot/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/Course_work/wwwroot/index.html" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -163,7 +166,7 @@
       <workItem from="1773141875008" duration="2844000" />
       <workItem from="1773710092503" duration="137000" />
       <workItem from="1773710266080" duration="58000" />
-      <workItem from="1773710357058" duration="306000" />
+      <workItem from="1773710357058" duration="3618000" />
     </task>
     <task id="LOCAL-00001" summary="Курсовая">
       <option name="closed" value="true" />
@@ -218,6 +221,19 @@
           <properties exception="System.Threading.ThreadAbortException" breakIfHandledByOtherCode="false" displayValue="System.Threading.ThreadAbortException" />
           <option name="timeStamp" value="3" />
         </breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/Course_work/Program.cs</url>
+          <line>13</line>
+          <properties documentPath="C:\Users\arina\Desktop\предметы_3_курс\2_семестр\курсовая\c#\Course_Work\Course_work\Program.cs" containingFunctionPresentation="">
+            <startOffsets>
+              <option value="355" />
+            </startOffsets>
+            <endOffsets>
+              <option value="356" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="4" />
+        </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
   </component>
