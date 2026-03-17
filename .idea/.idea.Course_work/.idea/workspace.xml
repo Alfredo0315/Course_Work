@@ -8,9 +8,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="088cf991-a4d4-4b77-9577-df8393ffab56" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.Course_work/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Course_work/.idea/workspace.xml" afterDir="false" />
-    </list>
+    <list default="true" id="088cf991-a4d4-4b77-9577-df8393ffab56" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -165,6 +163,7 @@
       <workItem from="1773141875008" duration="2844000" />
       <workItem from="1773710092503" duration="137000" />
       <workItem from="1773710266080" duration="58000" />
+      <workItem from="1773710357058" duration="306000" />
     </task>
     <task id="LOCAL-00001" summary="Курсовая">
       <option name="closed" value="true" />
