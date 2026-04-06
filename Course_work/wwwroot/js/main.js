@@ -68,7 +68,6 @@ async function loadAllNews() {
             return;
         }
 
-
         allNews.sort((a, b) => {
             const dateA = new Date(a.date_of_publication + ' ' + a.time_of_publication);
             const dateB = new Date(b.date_of_publication + ' ' + b.time_of_publication);
@@ -86,24 +85,17 @@ async function loadAllNews() {
 
 function displayNews(newsToShow) {
     const newsHTML = newsToShow.map(item => createNewsCard(item)).join('');
-
     const container = document.getElementById('news-list');
     container.innerHTML = newsHTML;
 }
 
 
 function updateShowMoreButton() {
-    const container = document.getElementById('news-list');
     const showMoreBtn = document.getElementById('show-more-btn');
-
     if (displayedNewsCount >= allNews.length) {
-        if (showMoreBtn) {
-            showMoreBtn.style.display = 'none';
-        }
+        if (showMoreBtn) showMoreBtn.style.display = 'none';
     } else {
-        if (showMoreBtn) {
-            showMoreBtn.style.display = 'block';
-        }
+        if (showMoreBtn) showMoreBtn.style.display = 'block';
     }
 }
 
@@ -118,12 +110,13 @@ function showMoreNews() {
 function filterNewsByDate(selectedDate) {
     if (!selectedDate) {
         displayNews(allNews.slice(0, displayedNewsCount));
+        updateShowMoreButton();
         return;
     }
-
+    
     const filtered = allNews.filter(news => {
-        const newsDate = new Date(news.date_of_publication).toISOString().split('T')[0];
-        return newsDate === selectedDate;
+        const newsDate = news.date_of_publication || '';
+        return newsDate.toString().includes(selectedDate);
     });
 
     if (filtered.length === 0) {
@@ -133,11 +126,8 @@ function filterNewsByDate(selectedDate) {
         displayNews(filtered);
     }
 
-
     const showMoreBtn = document.getElementById('show-more-btn');
-    if (showMoreBtn) {
-        showMoreBtn.style.display = 'none';
-    }
+    if (showMoreBtn) showMoreBtn.style.display = 'none';
 }
 
 
@@ -207,7 +197,6 @@ async function loadTopTeams() {
             return;
         }
 
-
         const topTeams = teams
             .sort((a, b) => (b.prize_pool || 0) - (a.prize_pool || 0))
             .slice(0, 10);
@@ -256,7 +245,6 @@ async function loadTopPlayers() {
 
 
 function createPlayerCard(player, rank) {
-    
     return `
         <div class="player-item">
             <div class="player-rank">#${rank}</div>

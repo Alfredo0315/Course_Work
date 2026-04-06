@@ -1,4 +1,4 @@
-const API_BASE_URL = 'http://localhost:5057/api'; 
+const API_BASE_URL = 'http://localhost:5057/api';
 
 
 class ApiService {
@@ -6,7 +6,7 @@ class ApiService {
         this.baseUrl = baseUrl;
     }
 
-    
+
     async get(endpoint) {
         try {
             const response = await fetch(`${this.baseUrl}${endpoint}`, {
@@ -27,7 +27,7 @@ class ApiService {
         }
     }
 
-    
+
     async post(endpoint, data) {
         try {
             const response = await fetch(`${this.baseUrl}${endpoint}`, {
@@ -49,7 +49,7 @@ class ApiService {
         }
     }
 
-    
+
     async getNews() {
         return this.get('/News');
     }
@@ -58,7 +58,7 @@ class ApiService {
         return this.get(`/News/${id}`);
     }
 
-   
+
     async getGames() {
         return this.get('/Games');
     }
@@ -67,7 +67,7 @@ class ApiService {
         return this.get(`/Games/${id}`);
     }
 
-    
+
     async getTournaments() {
         return this.get('/Tournaments');
     }
@@ -88,7 +88,7 @@ class ApiService {
         return this.get(`/Teams/ByTournament/${tournamentId}`);
     }
 
-    
+
     async getPlayers() {
         return this.get('/Players');
     }
@@ -109,7 +109,7 @@ class ApiService {
         return this.get(`/Players/TopByPrize?count=${count}`);
     }
 
-   
+
     async getMatches() {
         return this.get('/Matches');
     }
@@ -131,12 +131,16 @@ class ApiService {
 const api = new ApiService(API_BASE_URL);
 
 
-
 function formatDate(dateString) {
     if (!dateString) return 'N/A';
-    const date = new Date(dateString);
-    const options = { year: 'numeric', month: 'long', day: 'numeric' };
-    return date.toLocaleDateString('ru-RU', options);
+
+    const datePart = dateString.toString().substring(0, 10);
+    const [year, month, day] = datePart.split('-').map(Number);
+
+    const months = ['января', 'февраля', 'марта', 'апреля', 'мая', 'июня',
+        'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря'];
+
+    return `${day} ${months[month - 1]} ${year}`;
 }
 
 function formatTime(timeString) {
