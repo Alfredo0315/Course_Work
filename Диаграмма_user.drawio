@@ -1,0 +1,201 @@
+<mxfile host="Electron" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/26.0.9 Chrome/128.0.6613.186 Electron/32.2.5 Safari/537.36" version="26.0.9">
+  <diagram name="Зарегистрированный пользователь" id="registered_user">
+    <mxGraphModel dx="2873" dy="769" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="0" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="start" value="" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;" parent="1" vertex="1">
+          <mxGeometry x="-785.08" y="79" width="30" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="auth" value="Авторизация" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="-830.08" y="149" width="120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="user_1" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="start" target="auth" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="main_page" value="Главная страница" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="-830.08" y="229" width="120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="user_2" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="auth" target="main_page" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="choose_section" value="Выбор&#xa;раздела" style="rhombus;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="-835.08" y="309" width="130" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="user_3" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="main_page" target="choose_section" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="view_tournaments" value="Просмотр&#xa;турниров" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="-545" y="199" width="120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="user_4" value="Турниры" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="choose_section" target="view_tournaments" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="-665" y="349" />
+              <mxPoint x="-665" y="219" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="tournament_details" value="Просмотр&#xa;деталей турнира" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="-375" y="199" width="120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="user_5" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="view_tournaments" target="tournament_details" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="view_prize" value="Просмотр&#xa;призового фонда" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="-205" y="199" width="120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="user_6" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="tournament_details" target="view_prize" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="view_teams" value="Просмотр&#xa;команд" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="-545" y="279" width="120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="user_7" value="Команды" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="choose_section" target="view_teams" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="team_roster" value="Просмотр&#xa;состава команды" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="-375" y="279" width="120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="user_8" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="view_teams" target="team_roster" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="team_stats" value="Просмотр&#xa;статистики" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="-205" y="279" width="120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="user_9" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="team_roster" target="team_stats" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="view_players" value="Просмотр&#xa;игроков" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="-545" y="359" width="120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="user_10" value="Игроки" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="choose_section" target="view_players" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="player_profile" value="Просмотр&#xa;профиля игрока" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="-375" y="359" width="120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="user_11" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="view_players" target="player_profile" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="player_stats" value="Просмотр&#xa;статистики&#xa;и наград" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="-205" y="354" width="120" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="user_12" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="player_profile" target="player_stats" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="view_matches" value="Просмотр&#xa;расписания&#xa;матчей" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="-830.08" y="439" width="120" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="user_13" value="Матчи" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="choose_section" target="view_matches" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="filter_matches" value="Фильтрация&#xa;по дате/турниру" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="-830.08" y="529" width="120" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="user_14" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="view_matches" target="filter_matches" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="select_match" value="Выбор матча" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="-830.08" y="619" width="120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="user_15" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="filter_matches" target="select_match" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="match_details" value="Просмотр&#xa;деталей матча" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="-565" y="619" width="120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="user_16" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="select_match" target="match_details" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="match_results" value="Просмотр&#xa;результатов" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="-395" y="619" width="120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="user_17" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="match_details" target="match_results" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="view_news" value="Просмотр&#xa;новостей" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="-830.08" y="709" width="120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="user_18" value="Новости" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;" parent="1" source="choose_section" target="view_news" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="-855" y="349" />
+              <mxPoint x="-855" y="729" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="news_details" value="Просмотр&#xa;полной новости" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="-565" y="709" width="120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="user_19" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="view_news" target="news_details" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="search" value="Поиск&#xa;по ключевым&#xa;словам" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="-395" y="704" width="120" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="user_20" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="news_details" target="search" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="continue" value="Продолжить&#xa;просмотр?" style="rhombus;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="-225" y="539" width="130" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="user_21" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.997;exitY=0.585;exitDx=0;exitDy=0;exitPerimeter=0;" parent="1" source="view_prize" target="continue" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="-65" y="222" />
+              <mxPoint x="-65" y="579" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="user_22" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" parent="1" source="team_stats" target="continue" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="-65" y="299" />
+              <mxPoint x="-65" y="579" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="user_23" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" parent="1" source="player_stats" target="continue" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="-65" y="379" />
+              <mxPoint x="-65" y="579" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="user_24" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="match_results" target="continue" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="-335" y="679" />
+              <mxPoint x="-65" y="679" />
+              <mxPoint x="-65" y="579" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="user_25" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" parent="1" source="search" target="continue" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="-65" y="729" />
+              <mxPoint x="-65" y="579" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="user_26" value="да" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;" parent="1" source="continue" target="choose_section" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="-665" y="579" />
+              <mxPoint x="-665" y="369" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="end" value="" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;" parent="1" vertex="1">
+          <mxGeometry x="-175" y="639" width="30" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="user_27" value="нет" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="continue" target="end" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
