@@ -6,15 +6,67 @@
     <title>Новости - Киберспорт</title>
     <link rel="stylesheet" href="../css/style.css">
     <link rel="stylesheet" href="../css/responsive.css">
+    <link rel="stylesheet" href="../css/modal.css">
+    <style>
+        .auth-user { display: flex; align-items: center; gap: 10px; }
+        .auth-role-badge {
+            padding: 3px 10px; border-radius: 20px; font-size: 0.78rem;
+            font-weight: 600; white-space: nowrap;
+        }
+        .auth-name { color: #ccc; font-size: 0.9rem; white-space: nowrap; }
+        .auth-logout-btn {
+            background: transparent; border: 1px solid #444; border-radius: 6px;
+            color: #aaa; padding: 4px 10px; font-size: 0.82rem; cursor: pointer;
+            transition: border-color 0.2s, color 0.2s;
+        }
+        .auth-logout-btn:hover { border-color: #ff4757; color: #ff4757; }
+        .auth-login-link {
+            color: #ff4757; text-decoration: none; font-weight: 600;
+            font-size: 0.9rem; border: 1px solid #ff4757;
+            padding: 5px 14px; border-radius: 6px; transition: background 0.2s;
+        }
+        .auth-login-link:hover { background: rgba(255,71,87,0.12); }
+
+        .content-actions {
+            display: flex; gap: 10px; margin-bottom: 24px; flex-wrap: wrap;
+        }
+        .btn-action {
+            padding: 9px 18px; border-radius: 8px; border: none;
+            font-size: 0.88rem; font-weight: 600; cursor: pointer;
+            transition: opacity 0.2s;
+        }
+        .btn-action:hover { opacity: 0.85; }
+        .btn-add { background: #2ecc71; color: #fff; }
+        .btn-edit { background: #3498db; color: #fff; }
+        .btn-delete { background: #ff4757; color: #fff; }
+
+        .news-card-actions {
+            display: flex; gap: 8px; margin-top: 12px;
+        }
+        .btn-sm {
+            padding: 5px 14px; border-radius: 6px; border: none;
+            font-size: 0.78rem; font-weight: 600; cursor: pointer;
+            transition: opacity 0.2s;
+        }
+        .btn-sm:hover { opacity: 0.8; }
+        .btn-sm-edit { background: #3498db; color: #fff; }
+        .btn-sm-delete { background: #ff4757; color: #fff; }
+
+        .role-notice {
+            background: rgba(52,152,219,0.1);
+            border: 1px solid rgba(52,152,219,0.3);
+            border-radius: 8px; padding: 10px 16px;
+            color: #7fb3d3; font-size: 0.85rem; margin-bottom: 20px;
+        }
+    </style>
+
 </head>
 <body>
 
 <header class="header">
     <div class="container">
         <div class="header-content">
-            <div class="logo">
-                <h1>ESPORTS<span>.RU</span></h1>
-            </div>
+            <div class="logo"><h1>ESPORTS<span>.RU</span></h1></div>
             <nav class="nav">
                 <ul>
                     <li><a href="../index.html">Главная</a></li>
@@ -25,38 +77,95 @@
                     <li><a href="matches.html">Матчи</a></li>
                 </ul>
             </nav>
+            <div id="auth-widget"></div>
         </div>
     </div>
 </header>
-
 
 <main class="main-content">
     <div class="container">
         <h1 class="section-title">Последние новости</h1>
 
-        
+        <div class="role-notice" data-role="auth" style="display:none;">
+            ℹ Вы вошли как: <strong id="current-role-label">—</strong>
+        </div>
+
+        <div class="content-actions" data-role="admin,manager" style="display:none;">
+            <button class="btn-action btn-add" onclick="openNewsModal()">
+                + Добавить новость
+            </button>
+        </div>
+
         <div id="news-list" class="news-list">
             <div class="loading">Загрузка новостей...</div>
         </div>
     </div>
 </main>
 
-
 <footer class="footer">
     <div class="container">
         <div class="footer-content">
             <p>&copy; 2026 Esports.ru - Информационный портал о киберспорте</p>
-            <div class="footer-links">
-                <a href="#">О проекте</a>
-                <a href="#">Контакты</a>
-                <a href="#">Реклама</a>
-            </div>
         </div>
     </div>
 </footer>
 
+<div id="news-modal" class="modal-overlay">
+    <div class="modal">
+        <div class="modal-header">
+            <h3 class="modal-title" id="modal-title">Добавить новость</h3>
+            <button class="modal-close" onclick="closeNewsModal()">&times;</button>
+        </div>
+        <form id="news-form" onsubmit="saveNews(event)">
+            <input type="hidden" id="news-id">
+            <div class="form-group">
+                <label>Заголовок</label>
+                <input type="text" id="news-title" required>
+            </div>
+            <div class="form-group">
+                <label>Описание</label>
+                <textarea id="news-description" required></textarea>
+            </div>
+            <div class="form-group">
+                <label>Дата публикации</label>
+                <input type="date" id="news-date" required>
+            </div>
+            <div class="form-group">
+                <label>Время публикации</label>
+                <input type="time" id="news-time" required>
+            </div>
+            <div class="form-actions">
+                <button type="submit" class="btn-save">Сохранить</button>
+                <button type="button" class="btn-cancel" onclick="closeNewsModal()">Отмена</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div id="toast" class="toast"></div>
+
+<script src="../js/config.js"></script>
+<script src="../js/auth.js"></script>
 <script src="../js/api.js"></script>
 <script>
+    // Инициализация авторизации
+    AuthService.renderAuthWidget();
+    AuthService.applyVisibility();
+
+    const roleLabels = {
+        Admin: 'Администратор',
+        ContentManager: 'Контент-менеджер',
+        User: 'Пользователь',
+        guest: 'Гость',
+    };
+    const roleLabelEl = document.getElementById('current-role-label');
+    if (roleLabelEl) {
+        roleLabelEl.textContent = roleLabels[AuthService.getRole()] || 'Гость';
+    }
+
+    let allNews = [];
+    let editingNewsId = null;
+
     document.addEventListener('DOMContentLoaded', async () => {
         await loadAllNews();
     });
@@ -64,22 +173,21 @@
     async function loadAllNews() {
         try {
             showLoading('news-list');
-            const news = await api.getNews();
+            allNews = await api.getNews();
 
-            if (!news || news.length === 0) {
+            if (!allNews || allNews.length === 0) {
                 document.getElementById('news-list').innerHTML =
                     '<p class="error-message">Новостей пока нет</p>';
                 return;
             }
 
-            
-            news.sort((a, b) => {
+            allNews.sort((a, b) => {
                 const dateA = new Date(a.date_of_publication + ' ' + a.time_of_publication);
                 const dateB = new Date(b.date_of_publication + ' ' + b.time_of_publication);
                 return dateB - dateA;
             });
 
-            const newsHTML = news.map(item => createNewsCard(item)).join('');
+            const newsHTML = allNews.map(item => createNewsCard(item)).join('');
             document.getElementById('news-list').innerHTML = newsHTML;
         } catch (error) {
             console.error('Error loading news:', error);
@@ -88,21 +196,129 @@
     }
 
     function createNewsCard(news) {
+        const id = news.iD_News ?? news.ID_News;
         const date = formatDate(news.date_of_publication);
         const time = formatTime(news.time_of_publication);
+        const canManage = AuthService.canManageNews();
+
+        const actionsHTML = canManage ? `
+            <div class="news-card-actions">
+                <button class="btn-sm btn-sm-edit" onclick="editNews(${id})">✏ Редактировать</button>
+                <button class="btn-sm btn-sm-delete" onclick="deleteNews(${id})">🗑 Удалить</button>
+            </div>
+        ` : '';
 
         return `
-                <div class="news-card">
-                    <div class="news-card-content">
-                        <h3 class="news-card-title">${news.title}</h3>
-                        <div class="news-card-meta">
-                            <span class="news-date"> ${date}</span>
-                            <span class="news-time"> ${time}</span>
-                        </div>
-                        <p class="news-card-description">${news.description || 'Описание отсутствует'}</p>
+            <div class="news-card" id="news-card-${id}">
+                <div class="news-card-content">
+                    <h3 class="news-card-title">${news.title}</h3>
+                    <div class="news-card-meta">
+                        <span class="news-date">${date}</span>
+                        <span class="news-time">${time}</span>
                     </div>
+                    <p class="news-card-description">${news.description || 'Описание отсутствует'}</p>
+                    ${actionsHTML}
                 </div>
-            `;
+            </div>
+        `;
+    }
+
+    function openNewsModal(newsId = null) {
+        editingNewsId = newsId;
+        const modal = document.getElementById('news-modal');
+        const title = document.getElementById('modal-title');
+        const form = document.getElementById('news-form');
+
+        if (newsId) {
+            // Ищем по обоим вариантам написания (API возвращает camelCase)
+            const news = allNews.find(n => (n.iD_News ?? n.ID_News) === newsId);
+            if (!news) return;
+            title.textContent = 'Редактировать новость';
+            document.getElementById('news-id').value = newsId;
+            document.getElementById('news-title').value = news.title;
+            document.getElementById('news-description').value = news.description || '';
+            document.getElementById('news-date').value = news.date_of_publication?.substring(0, 10) || '';
+            document.getElementById('news-time').value = news.time_of_publication?.substring(0, 5) || '';
+        } else {
+            title.textContent = 'Добавить новость';
+            form.reset();
+            document.getElementById('news-id').value = '';
+            const now = new Date();
+            document.getElementById('news-date').value = now.toISOString().substring(0, 10);
+            document.getElementById('news-time').value = now.toTimeString().substring(0, 5);
+        }
+
+        modal.classList.add('active');
+    }
+
+    function closeNewsModal() {
+        document.getElementById('news-modal').classList.remove('active');
+        editingNewsId = null;
+    }
+
+    async function saveNews(event) {
+        event.preventDefault();
+        const id = document.getElementById('news-id').value;
+        const data = {
+            ID_News: id ? parseInt(id) : 0,
+            Title: document.getElementById('news-title').value,
+            Description: document.getElementById('news-description').value,
+            Date_of_publication: document.getElementById('news-date').value,
+            Time_of_publication: document.getElementById('news-time').value + ':00'
+        };
+
+        try {
+            if (id) {
+                const response = await fetch(`${API_BASE_URL}/News/${id}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+                if (!response.ok) throw new Error('Ошибка обновления');
+                showToast('Новость обновлена', 'success');
+            } else {
+                const response = await fetch(`${API_BASE_URL}/News`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+                if (!response.ok) throw new Error('Ошибка добавления');
+                showToast('Новость добавлена', 'success');
+            }
+            closeNewsModal();
+            await loadAllNews();
+        } catch (error) {
+            console.error('Error saving news:', error);
+            showToast('Ошибка: ' + error.message, 'error');
+        }
+    }
+
+    function editNews(id) {
+        openNewsModal(id);
+    }
+
+    async function deleteNews(id) {
+        if (!confirm('Удалить новость?')) return;
+        try {
+            const response = await fetch(`${API_BASE_URL}/News/${id}`, {
+                method: 'DELETE',
+                headers: { 'Content-Type': 'application/json' }
+            });
+            if (!response.ok) throw new Error('Ошибка удаления');
+            showToast('Новость удалена', 'success');
+            await loadAllNews();
+        } catch (error) {
+            console.error('Error deleting news:', error);
+            showToast('Ошибка удаления', 'error');
+        }
+    }
+
+    function showToast(message, type = 'success') {
+        const toast = document.getElementById('toast');
+        toast.textContent = message;
+        toast.className = `toast ${type}`;
+        setTimeout(() => toast.classList.add('show'), 10);
+        setTimeout(() => toast.classList.remove('show'), 3000);
     }
 </script>
 </body>

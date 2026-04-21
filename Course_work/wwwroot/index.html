@@ -6,7 +6,102 @@
     <title>Киберспорт - Главная</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/responsive.css">
-    <base target="_blank">
+    <style>
+        .auth-user {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .auth-role-badge {
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 0.78rem;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .auth-name {
+            color: #ccc;
+            font-size: 0.9rem;
+            white-space: nowrap;
+        }
+
+        .auth-logout-btn {
+            background: transparent;
+            border: 1px solid #444;
+            border-radius: 6px;
+            color: #aaa;
+            padding: 4px 10px;
+            font-size: 0.82rem;
+            cursor: pointer;
+            transition: border-color 0.2s, color 0.2s;
+        }
+
+        .auth-logout-btn:hover {
+            border-color: #ff4757;
+            color: #ff4757;
+        }
+
+        .auth-login-link {
+            color: #ff4757;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            border: 1px solid #ff4757;
+            padding: 5px 14px;
+            border-radius: 6px;
+            transition: background 0.2s;
+        }
+
+        .auth-login-link:hover {
+            background: rgba(255,71,87,0.12);
+        }
+
+        .content-actions {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .btn-action {
+            padding: 8px 16px;
+            border-radius: 8px;
+            border: none;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+
+        .btn-action:hover { opacity: 0.85; }
+
+        .btn-add    { background: #2ecc71; color: #fff; }
+        .btn-edit   { background: #3498db; color: #fff; }
+        .btn-delete { background: #ff4757; color: #fff; }
+        .btn-update { background: #f39c12; color: #fff; }
+        .btn-manage { background: #9b59b6; color: #fff; }
+
+        .news-card-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        .btn-sm {
+            padding: 4px 12px;
+            border-radius: 6px;
+            border: none;
+            font-size: 0.78rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+
+        .btn-sm:hover { opacity: 0.8; }
+    </style>
+
 </head>
 <body>
 <header class="header">
@@ -18,16 +113,18 @@
             <nav class="nav">
                 <ul>
                     <li><a href="index.html" class="active">Главная</a></li>
+                    <li><a href="pages/news.html">Новости</a></li>
                     <li><a href="pages/tournaments.html">Турниры</a></li>
                     <li><a href="pages/teams.html">Команды</a></li>
                     <li><a href="pages/players.html">Игроки</a></li>
                     <li><a href="pages/matches.html">Матчи</a></li>
                 </ul>
             </nav>
+
+            <div id="auth-widget"></div>
         </div>
     </div>
 </header>
-
 
 <section class="hero">
     <div class="container">
@@ -38,15 +135,12 @@
     </div>
 </section>
 
-
 <main class="main-content">
     <div class="container">
         <div class="content-grid">
             <div class="news-column">
                 <div class="news-header">
                     <h2 class="section-title">Последние новости</h2>
-
-
                     <div class="date-search">
                         <button onclick="toggleDatePicker()">📅</button>
                         <div id="date-picker-container" class="date-picker-container" style="display: none;">
@@ -57,10 +151,15 @@
                     </div>
                 </div>
 
+                <div class="content-actions" data-role="admin,manager">
+                    <button class="btn-action btn-add" onclick="alert('Форма добавления новости')">
+                        + Добавить новость
+                    </button>
+                </div>
+
                 <div id="news-list" class="news-list">
                     <div class="loading">Загрузка новостей...</div>
                 </div>
-
 
                 <div class="show-more-container">
                     <button id="show-more-btn" class="btn" onclick="showMoreNews()" style="display: none;">
@@ -69,26 +168,44 @@
                 </div>
             </div>
 
-
             <aside class="sidebar">
                 <div class="widget">
                     <h3 class="widget-title">Предстоящие матчи</h3>
+                    <!-- Кнопка обновления расписания: admin + manager -->
+                    <div style="margin-bottom: 8px;" data-role="admin,manager">
+                        <button class="btn-action btn-update" style="font-size:0.78rem;padding:5px 12px;"
+                                onclick="alert('Обновление расписания матчей')">
+                            ✏ Обновить расписание
+                        </button>
+                    </div>
                     <div id="upcoming-matches" class="matches-widget">
                         <div class="loading">Загрузка...</div>
                     </div>
                 </div>
 
-
                 <div class="widget">
                     <h3 class="widget-title">Топ команды</h3>
+                    <!-- Управление командами: только admin -->
+                    <div style="margin-bottom: 8px;" data-role="admin">
+                        <button class="btn-action btn-manage" style="font-size:0.78rem;padding:5px 12px;"
+                                onclick="alert('Управление данными о командах')">
+                            ⚙ Управление командами
+                        </button>
+                    </div>
                     <div id="top-teams" class="teams-widget">
                         <div class="loading">Загрузка...</div>
                     </div>
                 </div>
 
-
                 <div class="widget">
                     <h3 class="widget-title">Топ игроки</h3>
+                    <!-- Управление игроками: только admin -->
+                    <div style="margin-bottom: 8px;" data-role="admin">
+                        <button class="btn-action btn-manage" style="font-size:0.78rem;padding:5px 12px;"
+                                onclick="alert('Управление данными об игроках')">
+                            ⚙ Управление игроками
+                        </button>
+                    </div>
                     <div id="top-players" class="players-widget">
                         <div class="loading">Загрузка...</div>
                     </div>
@@ -97,7 +214,6 @@
         </div>
     </div>
 </main>
-
 
 <footer class="footer">
     <div class="container">
@@ -112,32 +228,26 @@
     </div>
 </footer>
 
+<script src="js/config.js"></script>
+<script src="js/auth.js"></script>
 <script src="js/api.js"></script>
 <script src="js/main.js"></script>
 <script>
 
+    AuthService.renderAuthWidget();
+    AuthService.applyVisibility();
+
     function toggleDatePicker() {
         const container = document.getElementById('date-picker-container');
-        if (container.style.display === 'none') {
-            container.style.display = 'flex';
-        } else {
-            container.style.display = 'none';
-        }
+        container.style.display = container.style.display === 'none' ? 'flex' : 'none';
     }
-
 
     function searchByDate() {
         const datePicker = document.getElementById('date-picker');
         const selectedDate = datePicker.value;
-
-        if (!selectedDate) {
-            alert('Пожалуйста, выберите дату');
-            return;
-        }
-
+        if (!selectedDate) { alert('Пожалуйста, выберите дату'); return; }
         filterNewsByDate(selectedDate);
     }
-
 
     function resetDateFilter() {
         const datePicker = document.getElementById('date-picker');

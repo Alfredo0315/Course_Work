@@ -6,34 +6,97 @@
     <title>Матчи - Киберспорт</title>
     <link rel="stylesheet" href="../css/style.css">
     <link rel="stylesheet" href="../css/responsive.css">
+    <link rel="stylesheet" href="../css/modal.css">
+    <style>
+        .auth-user { display: flex; align-items: center; gap: 10px; }
+        .auth-role-badge {
+            padding: 3px 10px; border-radius: 20px; font-size: 0.78rem;
+            font-weight: 600; white-space: nowrap;
+        }
+        .auth-name { color: #ccc; font-size: 0.9rem; white-space: nowrap; }
+        .auth-logout-btn {
+            background: transparent; border: 1px solid #444; border-radius: 6px;
+            color: #aaa; padding: 4px 10px; font-size: 0.82rem; cursor: pointer;
+            transition: border-color 0.2s, color 0.2s;
+        }
+        .auth-logout-btn:hover { border-color: #ff4757; color: #ff4757; }
+        .auth-login-link {
+            color: #ff4757; text-decoration: none; font-weight: 600;
+            font-size: 0.9rem; border: 1px solid #ff4757;
+            padding: 5px 14px; border-radius: 6px; transition: background 0.2s;
+        }
+        .auth-login-link:hover { background: rgba(255,71,87,0.12); }
+
+        .content-actions {
+            display: flex; gap: 10px; margin-bottom: 24px; flex-wrap: wrap;
+        }
+        .btn-action {
+            padding: 9px 18px; border-radius: 8px; border: none;
+            font-size: 0.88rem; font-weight: 600; cursor: pointer;
+            transition: opacity 0.2s;
+        }
+        .btn-action:hover { opacity: 0.85; }
+        .btn-add { background: #2ecc71; color: #fff; }
+        .btn-edit { background: #3498db; color: #fff; }
+        .btn-delete { background: #ff4757; color: #fff; }
+        .btn-update { background: #f39c12; color: #fff; }
+
+        .role-notice {
+            background: rgba(52,152,219,0.1);
+            border: 1px solid rgba(52,152,219,0.3);
+            border-radius: 8px; padding: 10px 16px;
+            color: #7fb3d3; font-size: 0.85rem; margin-bottom: 20px;
+        }
+
+        .table-container .btn-sm {
+            padding: 3px 10px; border-radius: 4px; border: none;
+            font-size: 0.72rem; font-weight: 600; cursor: pointer;
+            transition: opacity 0.2s; margin: 0 2px;
+        }
+        .table-container .btn-sm:hover { opacity: 0.8; }
+        .table-container .btn-sm-edit { background: #3498db; color: #fff; }
+        .table-container .btn-sm-delete { background: #ff4757; color: #fff; }
+    </style>
+
 </head>
 <body>
 
 <header class="header">
     <div class="container">
         <div class="header-content">
-            <div class="logo">
-                <h1>ESPORTS<span>.RU</span></h1>
-            </div>
+            <div class="logo"><h1>ESPORTS<span>.RU</span></h1></div>
             <nav class="nav">
                 <ul>
                     <li><a href="../index.html">Главная</a></li>
+                    <li><a href="news.html">Новости</a></li>
                     <li><a href="tournaments.html">Турниры</a></li>
                     <li><a href="teams.html">Команды</a></li>
                     <li><a href="players.html">Игроки</a></li>
                     <li><a href="matches.html" class="active">Матчи</a></li>
                 </ul>
             </nav>
+            <div id="auth-widget"></div>
         </div>
     </div>
 </header>
-
 
 <main class="main-content">
     <div class="container">
         <h1 class="section-title">Матчи</h1>
 
-      
+        <div class="role-notice" data-role="auth" style="display:none;">
+            ℹ Вы вошли как: <strong id="current-role-label">—</strong>
+        </div>
+
+        <div class="content-actions" data-role="admin,manager" style="display:none;">
+            <button class="btn-action btn-add" onclick="openMatchModal()">
+                + Добавить матч
+            </button>
+            <button class="btn-action btn-update" onclick="alert('Обновление расписания')">
+                ✏ Обновить расписание
+            </button>
+        </div>
+
         <div class="tabs" style="margin-bottom: 30px; display: flex; gap: 10px; flex-wrap: wrap;">
             <button class="btn active" id="tab-all" onclick="showMatches('all')">Все матчи</button>
             <button class="btn btn-secondary" id="tab-upcoming" onclick="showMatches('upcoming')">Предстоящие</button>
@@ -41,7 +104,6 @@
             <button class="btn btn-secondary" id="tab-completed" onclick="showMatches('completed')">Завершённые</button>
         </div>
 
-       
         <div class="table-container">
             <table id="matches-table">
                 <thead>
@@ -51,36 +113,91 @@
                     <th>Команды</th>
                     <th>Статус</th>
                     <th>Счёт</th>
+                    <th data-role="admin,manager" style="display:none;">Действия</th>
                 </tr>
                 </thead>
                 <tbody id="matches-tbody">
-                <tr><td colspan="5" style="text-align: center;">Загрузка...</td></tr>
+                <tr><td colspan="6" style="text-align: center;">Загрузка...</td></tr>
                 </tbody>
             </table>
         </div>
     </div>
 </main>
 
-
 <footer class="footer">
     <div class="container">
         <div class="footer-content">
             <p>&copy; 2026 Esports.ru - Информационный портал о киберспорте</p>
-            <div class="footer-links">
-                <a href="#">О проекте</a>
-                <a href="#">Контакты</a>
-                <a href="#">Реклама</a>
-            </div>
         </div>
     </div>
 </footer>
 
+<!-- Модальное окно -->
+<div id="match-modal" class="modal-overlay">
+    <div class="modal">
+        <div class="modal-header">
+            <h3 class="modal-title" id="modal-title">Добавить матч</h3>
+            <button class="modal-close" onclick="closeMatchModal()">&times;</button>
+        </div>
+        <form id="match-form" onsubmit="saveMatch(event)">
+            <input type="hidden" id="match-id">
+            <div class="form-group">
+                <label>Турнир (ID)</label>
+                <input type="number" id="match-tournament-id" required>
+            </div>
+            <div class="form-group">
+                <label>Дата матча</label>
+                <input type="date" id="match-date" required>
+            </div>
+            <div class="form-group">
+                <label>Время матча</label>
+                <input type="time" id="match-time">
+            </div>
+            <div class="form-group">
+                <label>Статус</label>
+                <select id="match-status">
+                    <option value="Запланирован">Запланирован</option>
+                    <option value="Идет">Идет</option>
+                    <option value="Завершен">Завершен</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Счёт</label>
+                <input type="text" id="match-score" placeholder="2:1">
+            </div>
+            <div class="form-actions">
+                <button type="submit" class="btn-save">Сохранить</button>
+                <button type="button" class="btn-cancel" onclick="closeMatchModal()">Отмена</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div id="toast" class="toast"></div>
+
+<script src="../js/config.js"></script>
+<script src="../js/auth.js"></script>
 <script src="../js/api.js"></script>
 <script>
+    AuthService.renderAuthWidget();
+    AuthService.applyVisibility();
+
+    const roleLabels = {
+        Admin: 'Администратор',
+        ContentManager: 'Контент-менеджер',
+        User: 'Пользователь',
+        guest: 'Гость',
+    };
+    const roleLabelEl = document.getElementById('current-role-label');
+    if (roleLabelEl) {
+        roleLabelEl.textContent = roleLabels[AuthService.getRole()] || 'Гость';
+    }
+
     let allMatches = [];
     let tournaments = {};
     let teams = {};
     let currentFilter = 'all';
+    let editingMatchId = null;
 
     document.addEventListener('DOMContentLoaded', async () => {
         await loadTournamentsCache();
@@ -88,16 +205,13 @@
         await loadMatches();
     });
 
-    
     async function loadTournamentsCache() {
         try {
             const tournamentsList = await api.getTournaments();
             if (tournamentsList && tournamentsList.length > 0) {
                 tournamentsList.forEach(t => {
                     const id = t.iD_Tournament || t.ID_Tournament || t.id_Tournament;
-                    if (id) {
-                        tournaments[id] = t;
-                    }
+                    if (id) tournaments[id] = t;
                 });
             }
         } catch (error) {
@@ -105,45 +219,34 @@
         }
     }
 
-    
     async function loadTeamsCache() {
         try {
             const teamsList = await api.getTeams();
             if (teamsList && teamsList.length > 0) {
                 teamsList.forEach(t => {
                     const id = t.iD_Teams || t.ID_Teams || t.id_Teams;
-                    if (id) {
-                        teams[id] = t;
-                    }
+                    if (id) teams[id] = t;
                 });
-                console.log('Loaded teams cache:', Object.keys(teams).length);
             }
         } catch (error) {
             console.error('Error loading teams cache:', error);
         }
     }
 
-    
     function getTournamentName(tournamentId) {
         if (!tournamentId) return 'N/A';
         const tournament = tournaments[tournamentId];
         return tournament ? tournament.name : `Турнир #${tournamentId}`;
     }
 
-    
     async function getTeamsForTournament(tournamentId) {
         if (!tournamentId) return [];
-
         try {
-           
-            const response = await fetch(`${api.baseUrl}/Teams/ByTournament/${tournamentId}`);
-            if (response.ok) {
-                return await response.json();
-            }
+            const response = await fetch(`${API_BASE_URL}/Teams/ByTournament/${tournamentId}`);
+            if (response.ok) return await response.json();
         } catch (error) {
             console.error('Error loading teams for tournament:', error);
         }
-
         return [];
     }
 
@@ -153,11 +256,10 @@
 
             if (!allMatches || allMatches.length === 0) {
                 document.getElementById('matches-tbody').innerHTML =
-                    '<tr><td colspan="5" class="error-message">Матчи не найдены</td></tr>';
+                    '<tr><td colspan="6" class="error-message">Матчи не найдены</td></tr>';
                 return;
             }
 
-           
             for (let match of allMatches) {
                 const tournamentId = match.iD_Tournament || match.ID_Tournament || match.id_Tournament;
                 if (tournamentId && !match.teamsLoaded) {
@@ -170,14 +272,12 @@
         } catch (error) {
             console.error('Error loading matches:', error);
             document.getElementById('matches-tbody').innerHTML =
-                '<tr><td colspan="5" class="error-message">Ошибка загрузки матчей</td></tr>';
+                '<tr><td colspan="6" class="error-message">Ошибка загрузки матчей</td></tr>';
         }
     }
 
     function showMatches(filter) {
         currentFilter = filter;
-
-        
         document.querySelectorAll('.tabs .btn').forEach(btn => {
             btn.classList.remove('active');
             btn.classList.add('btn-secondary');
@@ -185,23 +285,31 @@
         document.getElementById(`tab-${filter}`).classList.add('active');
         document.getElementById(`tab-${filter}`).classList.remove('btn-secondary');
 
-      
         let filtered = allMatches;
-        if (filter === 'upcoming') {
-            filtered = allMatches.filter(m => m.status === 'Запланирован');
-        } else if (filter === 'live') {
-            filtered = allMatches.filter(m => m.status === 'Идет');
-        } else if (filter === 'completed') {
-            filtered = allMatches.filter(m => m.status === 'Завершен');
-        }
+        if (filter === 'upcoming') filtered = allMatches.filter(m => m.status === 'Запланирован');
+        else if (filter === 'live') filtered = allMatches.filter(m => m.status === 'Идет');
+        else if (filter === 'completed') filtered = allMatches.filter(m => m.status === 'Завершен');
 
         displayMatches(filtered);
+    }
+
+    function formatMatchDateTime(match) {
+        if (!match.match_date) return 'N/A';
+        const dateStr = match.match_date.toString();
+        const datePart = dateStr.substring(0, 10);
+        const [year, month, day] = datePart.split('-').map(Number);
+        let timeStr = match.match_Time || match.match_time || '';
+        if (timeStr) timeStr = timeStr.toString().substring(0, 5);
+        const months = ['янв', 'фев', 'мар', 'апр', 'мая', 'июн', 'июл', 'авг', 'сен', 'окт', 'ноя', 'дек'];
+        const formattedDate = `${day} ${months[month - 1]}`;
+        if (timeStr && timeStr !== '00:00') return `${formattedDate}, ${timeStr}`;
+        return formattedDate;
     }
 
     function displayMatches(matches) {
         if (matches.length === 0) {
             document.getElementById('matches-tbody').innerHTML =
-                '<tr><td colspan="5" style="text-align: center; color: var(--text-secondary);">Матчи не найдены</td></tr>';
+                '<tr><td colspan="6" style="text-align: center; color: var(--text-secondary);">Матчи не найдены</td></tr>';
             return;
         }
 
@@ -211,36 +319,122 @@
             return dateB - dateA;
         });
 
+        const canManage = AuthService.canManageMatches();
+
         const matchesHTML = sorted.map(match => {
             const statusClass = match.status === 'Идет' ? 'live' :
                 match.status === 'Запланирован' ? 'upcoming' : '';
-
             const tournamentId = match.iD_Tournament || match.ID_Tournament || match.id_Tournament;
             const tournamentName = getTournamentName(tournamentId);
 
-          
             let teamsDisplay = 'TBD';
             if (match.tournamentTeams && match.tournamentTeams.length >= 2) {
-              
-                const team1 = match.tournamentTeams[0].name;
-                const team2 = match.tournamentTeams[1].name;
-                teamsDisplay = `${team1} vs ${team2}`;
+                teamsDisplay = `${match.tournamentTeams[0].name} vs ${match.tournamentTeams[1].name}`;
             } else if (match.tournamentTeams && match.tournamentTeams.length === 1) {
                 teamsDisplay = match.tournamentTeams[0].name;
             }
 
+            const dateTime = formatMatchDateTime(match);
+
             return `
-                    <tr>
-                        <td>${formatDateTime(match.match_date)}</td>
-                        <td>${tournamentName}</td>
-                        <td><strong>${teamsDisplay}</strong></td>
-                        <td><span class="match-status ${statusClass}">${match.status}</span></td>
-                        <td><strong>${match.score || 'TBD'}</strong></td>
-                    </tr>
-                `;
+                <tr id="match-row-${match.iD_Matches}">
+                    <td>${dateTime}</td>
+                    <td>${tournamentName}</td>
+                    <td><strong>${teamsDisplay}</strong></td>
+                    <td><span class="match-status ${statusClass}">${match.status}</span></td>
+                    <td><strong>${match.score || 'TBD'}</strong></td>
+                    ${canManage ? `
+                    <td>
+                        <button class="btn-sm btn-sm-edit" onclick="editMatch(${match.iD_Matches})">✏</button>
+                        <button class="btn-sm btn-sm-delete" onclick="deleteMatch(${match.iD_Matches})">🗑</button>
+                    </td>
+                    ` : '<td></td>'}
+                </tr>
+            `;
         }).join('');
 
         document.getElementById('matches-tbody').innerHTML = matchesHTML;
+    }
+
+    function openMatchModal(id = null) {
+        editingMatchId = id;
+        const modal = document.getElementById('match-modal');
+        const title = document.getElementById('modal-title');
+        const form = document.getElementById('match-form');
+
+        if (id) {
+            const m = allMatches.find(x => x.iD_Matches === id);
+            if (!m) return;
+            title.textContent = 'Редактировать матч';
+            document.getElementById('match-id').value = m.iD_Matches;
+            document.getElementById('match-tournament-id').value = m.iD_Tournament || '';
+            document.getElementById('match-date').value = m.match_date?.substring(0, 10) || '';
+            document.getElementById('match-time').value = (m.match_Time || m.match_time || '').substring(0, 5) || '';
+            document.getElementById('match-status').value = m.status || 'Запланирован';
+            document.getElementById('match-score').value = m.score || '';
+        } else {
+            title.textContent = 'Добавить матч';
+            form.reset();
+            document.getElementById('match-id').value = '';
+        }
+        modal.classList.add('active');
+    }
+
+    function closeMatchModal() {
+        document.getElementById('match-modal').classList.remove('active');
+        editingMatchId = null;
+    }
+
+    async function saveMatch(event) {
+        event.preventDefault();
+        const id = document.getElementById('match-id').value;
+        const data = {
+            ID_Tournament: parseInt(document.getElementById('match-tournament-id').value),
+            Match_date: document.getElementById('match-date').value,
+            Match_time: document.getElementById('match-time').value || '00:00',
+            Status: document.getElementById('match-status').value,
+            Score: document.getElementById('match-score').value || null
+        };
+
+        try {
+            const url = id ? `${API_BASE_URL}/Matches/${id}` : `${API_BASE_URL}/Matches`;
+            const method = id ? 'PUT' : 'POST';
+            const response = await fetch(url, {
+                method: method,
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            });
+            if (!response.ok) throw new Error('Ошибка сохранения');
+            showToast(id ? 'Матч обновлен' : 'Матч добавлен', 'success');
+            closeMatchModal();
+            await loadMatches();
+        } catch (error) {
+            showToast('Ошибка: ' + error.message, 'error');
+        }
+    }
+
+    function editMatch(id) {
+        openMatchModal(id);
+    }
+
+    async function deleteMatch(id) {
+        if (!confirm('Удалить матч?')) return;
+        try {
+            const response = await fetch(`${API_BASE_URL}/Matches/${id}`, { method: 'DELETE' });
+            if (!response.ok) throw new Error('Ошибка удаления');
+            showToast('Матч удален', 'success');
+            await loadMatches();
+        } catch (error) {
+            showToast('Ошибка удаления', 'error');
+        }
+    }
+
+    function showToast(message, type = 'success') {
+        const toast = document.getElementById('toast');
+        toast.textContent = message;
+        toast.className = `toast ${type}`;
+        setTimeout(() => toast.classList.add('show'), 10);
+        setTimeout(() => toast.classList.remove('show'), 3000);
     }
 </script>
 </body>

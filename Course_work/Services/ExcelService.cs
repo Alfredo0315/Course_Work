@@ -15,9 +15,6 @@ namespace Course_Work.Services
             _context = context;
         }
 
-        /// <summary>
-        /// Генерирует Excel файл с данными о турнирах, матчах, командах и игроках
-        /// </summary>
         public async Task<byte[]> GetExcelAsync()
         {
             // Получаем данные из БД

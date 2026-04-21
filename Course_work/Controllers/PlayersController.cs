@@ -160,10 +160,7 @@ namespace Course_Work.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdatePlayer(int id, Player player)
         {
-            if (id != player.ID_Players)
-            {
-                return BadRequest(new { message = "ID не совпадает" });
-            }
+            player.ID_Players = id; 
 
             _context.Entry(player).State = EntityState.Modified;
 

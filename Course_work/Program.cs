@@ -5,9 +5,8 @@ using OfficeOpenXml;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// ========================================
 // EPPlus License для версии 8.5.1
-// ========================================
+
 ExcelPackage.License.SetNonCommercialPersonal("Your Name");
 
 builder.Services.AddCors(options =>
@@ -25,7 +24,11 @@ builder.Services.AddDbContext<EsportsDbContext>(options =>
 
 builder.Services.AddScoped<ExcelService>();
 
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.PropertyNameCaseInsensitive = true;
+    });
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

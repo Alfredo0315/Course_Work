@@ -14,6 +14,7 @@ namespace Course_Work.Models
         public DbSet<Team> Teams { get; set; }
         public DbSet<Player> Players { get; set; }
         public DbSet<Match> Matches { get; set; }
+        public DbSet<User> Users { get; set; }
 
         // Промежуточные таблицы 
         public DbSet<GamesNews> GamesNews { get; set; }
@@ -25,9 +26,7 @@ namespace Course_Work.Models
         {
             base.OnModelCreating(modelBuilder);
 
-            // ========================================
             // Games_News
-            // ========================================
             modelBuilder.Entity<GamesNews>()
                 .HasKey(gn => new { gn.ID_Games, gn.ID_News });
 
@@ -43,9 +42,7 @@ namespace Course_Work.Models
                 .HasForeignKey(gn => gn.ID_News)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            // ========================================
             // Players_Games
-            // ========================================
             modelBuilder.Entity<PlayersGames>()
                 .HasKey(pg => new { pg.ID_Players, pg.ID_Games });
 
@@ -61,9 +58,7 @@ namespace Course_Work.Models
                 .HasForeignKey(pg => pg.ID_Games)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            // ========================================
             // Teams_Tournament
-            // ========================================
             modelBuilder.Entity<TeamsTournament>()
                 .HasKey(tt => new { tt.ID_Teams, tt.ID_Tournament });
 
@@ -79,9 +74,7 @@ namespace Course_Work.Models
                 .HasForeignKey(tt => tt.ID_Tournament)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            // ========================================
             // Teams_Matches
-            // ========================================
             modelBuilder.Entity<TeamsMatch>()
                 .HasKey(tm => new { tm.ID_Teams, tm.ID_Matches });
 
@@ -96,6 +89,10 @@ namespace Course_Work.Models
                 .WithMany(m => m.TeamsMatches)
                 .HasForeignKey(tm => tm.ID_Matches)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<User>()
+                .HasIndex(u => u.Login)
+                .IsUnique();
         }
     }
 }

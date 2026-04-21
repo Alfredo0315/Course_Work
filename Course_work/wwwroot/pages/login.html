@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Вход - Киберспорт</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+        .login-page {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--bg-primary, #0a0a0f);
+        }
+
+        .login-container {
+            background: var(--bg-secondary, #1a1a2e);
+            border: 1px solid var(--border-color, #2a2a4a);
+            border-radius: 12px;
+            padding: 40px;
+            width: 100%;
+            max-width: 420px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+        }
+
+        .login-logo {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        .login-logo h1 {
+            font-size: 2rem;
+            color: #fff;
+            letter-spacing: 2px;
+        }
+
+        .login-logo h1 span {
+            color: #ff4757;
+        }
+
+        .login-logo p {
+            color: #888;
+            margin-top: 6px;
+            font-size: 0.9rem;
+        }
+
+        .login-form .form-group {
+            margin-bottom: 20px;
+        }
+
+        .login-form label {
+            display: block;
+            color: #ccc;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+        }
+
+        .login-form input {
+            width: 100%;
+            padding: 12px 16px;
+            background: var(--bg-primary, #0a0a0f);
+            border: 1px solid var(--border-color, #2a2a4a);
+            border-radius: 8px;
+            color: #fff;
+            font-size: 1rem;
+            box-sizing: border-box;
+            transition: border-color 0.2s;
+        }
+
+        .login-form input:focus {
+            outline: none;
+            border-color: #ff4757;
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 13px;
+            background: #ff4757;
+            border: none;
+            border-radius: 8px;
+            color: #fff;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+            margin-top: 8px;
+        }
+
+        .login-btn:hover {
+            background: #e0374a;
+        }
+
+        .login-error {
+            background: rgba(255, 71, 87, 0.15);
+            border: 1px solid rgba(255, 71, 87, 0.4);
+            border-radius: 8px;
+            padding: 12px 16px;
+            color: #ff6b7a;
+            font-size: 0.9rem;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .login-hint {
+            margin-top: 28px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border-color, #2a2a4a);
+        }
+
+        .login-hint p {
+            color: #666;
+            font-size: 0.8rem;
+            margin-bottom: 8px;
+        }
+
+        .login-hint table {
+            width: 100%;
+            font-size: 0.8rem;
+            border-collapse: collapse;
+        }
+
+        .login-hint td {
+            padding: 4px 8px;
+            color: #888;
+        }
+
+        .login-hint td:first-child {
+            color: #aaa;
+            font-weight: 600;
+        }
+
+        .role-badge {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .role-admin { background: rgba(255,71,87,0.2); color: #ff4757; }
+        .role-manager { background: rgba(52,152,219,0.2); color: #3498db; }
+        .role-user { background: rgba(46,204,113,0.2); color: #2ecc71; }
+
+        .guest-link {
+            display: block;
+            text-align: center;
+            margin-top: 16px;
+            color: #666;
+            font-size: 0.85rem;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .guest-link:hover { color: #aaa; }
+    </style>
+</head>
+<body class="login-page">
+
+<div class="login-container">
+    <div class="login-logo">
+        <h1>ESPORTS<span>.RU</span></h1>
+        <p>Войдите в свой аккаунт</p>
+    </div>
+
+    <div id="login-error" class="login-error">
+        Неверный логин или пароль
+    </div>
+
+    <form class="login-form" onsubmit="handleLogin(event)">
+        <div class="form-group">
+            <label for="username">Логин</label>
+            <input type="text" id="username" placeholder="Введите логин" autocomplete="username" required>
+        </div>
+        <div class="form-group">
+            <label for="password">Пароль</label>
+            <input type="password" id="password" placeholder="Введите пароль" autocomplete="current-password" required>
+        </div>
+        <button type="submit" class="login-btn">Войти</button>
+    </form>
+
+    <a href="../index.html" class="guest-link">Продолжить без входа →</a>
+
+    <div class="login-hint">
+        <p>Тестовые аккаунты:</p>
+        <table>
+            <tr>
+                <td>admin / admin123</td>
+                <td><span class="role-badge role-admin">Администратор</span></td>
+            </tr>
+            <tr>
+            <tr><td>contentmanager / manager123</td><td><span class="role-badge role-manager">Контент-менеджер</span></td></tr>
+            <tr>
+                <td>user / user123</td>
+                <td><span class="role-badge role-user">Пользователь</span></td>
+            </tr>
+        </table>
+    </div>
+</div>
+<script src="../js/config.js"></script>
+<script src="../js/auth.js"></script>
+<script>
+
+    if (AuthService.isLoggedIn()) {
+        window.location.href = '../index.html';
+    }
+
+    async function handleLogin(event) {
+        event.preventDefault();
+        const username = document.getElementById('username').value.trim();
+        const password = document.getElementById('password').value;
+
+        const result = await AuthService.login(username, password);
+
+        if (result.success) {
+            window.location.href = '../index.html';
+        } else {
+            document.getElementById('login-error').style.display = 'block';
+        }
+    }
+</script>
+</body>
+</html>

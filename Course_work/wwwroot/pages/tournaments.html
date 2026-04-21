@@ -6,24 +6,77 @@
     <title>Турниры - Киберспорт</title>
     <link rel="stylesheet" href="../css/style.css">
     <link rel="stylesheet" href="../css/responsive.css">
+    <link rel="stylesheet" href="../css/modal.css">
+    <style>
+        .auth-user { display: flex; align-items: center; gap: 10px; }
+        .auth-role-badge {
+            padding: 3px 10px; border-radius: 20px; font-size: 0.78rem;
+            font-weight: 600; white-space: nowrap;
+        }
+        .auth-name { color: #ccc; font-size: 0.9rem; white-space: nowrap; }
+        .auth-logout-btn {
+            background: transparent; border: 1px solid #444; border-radius: 6px;
+            color: #aaa; padding: 4px 10px; font-size: 0.82rem; cursor: pointer;
+            transition: border-color 0.2s, color 0.2s;
+        }
+        .auth-logout-btn:hover { border-color: #ff4757; color: #ff4757; }
+        .auth-login-link {
+            color: #ff4757; text-decoration: none; font-weight: 600;
+            font-size: 0.9rem; border: 1px solid #ff4757;
+            padding: 5px 14px; border-radius: 6px; transition: background 0.2s;
+        }
+        .auth-login-link:hover { background: rgba(255,71,87,0.12); }
+
+        .content-actions {
+            display: flex; gap: 10px; margin-bottom: 24px; flex-wrap: wrap;
+        }
+        .btn-action {
+            padding: 9px 18px; border-radius: 8px; border: none;
+            font-size: 0.88rem; font-weight: 600; cursor: pointer;
+            transition: opacity 0.2s;
+        }
+        .btn-action:hover { opacity: 0.85; }
+        .btn-add { background: #2ecc71; color: #fff; }
+        .btn-edit { background: #3498db; color: #fff; }
+        .btn-delete { background: #ff4757; color: #fff; }
+
+        .card-actions {
+            display: flex; gap: 8px; margin-top: 12px;
+        }
+        .btn-sm {
+            padding: 5px 14px; border-radius: 6px; border: none;
+            font-size: 0.78rem; font-weight: 600; cursor: pointer;
+            transition: opacity 0.2s;
+        }
+        .btn-sm:hover { opacity: 0.8; }
+        .btn-sm-edit { background: #3498db; color: #fff; }
+        .btn-sm-delete { background: #ff4757; color: #fff; }
+
+        .role-notice {
+            background: rgba(52,152,219,0.1);
+            border: 1px solid rgba(52,152,219,0.3);
+            border-radius: 8px; padding: 10px 16px;
+            color: #7fb3d3; font-size: 0.85rem; margin-bottom: 20px;
+        }
+    </style>
 </head>
 <body>
 
 <header class="header">
     <div class="container">
         <div class="header-content">
-            <div class="logo">
-                <h1>ESPORTS<span>.RU</span></h1>
-            </div>
+            <div class="logo"><h1>ESPORTS<span>.RU</span></h1></div>
             <nav class="nav">
                 <ul>
                     <li><a href="../index.html">Главная</a></li>
+                    <li><a href="news.html">Новости</a></li>
                     <li><a href="tournaments.html" class="active">Турниры</a></li>
                     <li><a href="teams.html">Команды</a></li>
                     <li><a href="players.html">Игроки</a></li>
                     <li><a href="matches.html">Матчи</a></li>
                 </ul>
             </nav>
+            <div id="auth-widget"></div>
         </div>
     </div>
 </header>
@@ -31,6 +84,16 @@
 <main class="main-content">
     <div class="container">
         <h1 class="section-title">Турниры</h1>
+
+        <div class="role-notice" data-role="auth" style="display:none;">
+            ℹ Вы вошли как: <strong id="current-role-label">—</strong>
+        </div>
+
+        <div class="content-actions" data-role="admin" style="display:none;">
+            <button class="btn-action btn-add" onclick="openTournamentModal()">
+                + Добавить турнир
+            </button>
+        </div>
 
         <div id="tournaments-grid" class="grid-3">
             <div class="loading">Загрузка турниров...</div>
@@ -42,17 +105,73 @@
     <div class="container">
         <div class="footer-content">
             <p>&copy; 2026 Esports.ru - Информационный портал о киберспорте</p>
-            <div class="footer-links">
-                <a href="#">О проекте</a>
-                <a href="#">Контакты</a>
-                <a href="#">Реклама</a>
-            </div>
         </div>
     </div>
 </footer>
 
+<div id="tournament-modal" class="modal-overlay">
+    <div class="modal">
+        <div class="modal-header">
+            <h3 class="modal-title" id="modal-title">Добавить турнир</h3>
+            <button class="modal-close" onclick="closeTournamentModal()">&times;</button>
+        </div>
+        <form id="tournament-form" onsubmit="saveTournament(event)">
+            <input type="hidden" id="tournament-id">
+            <div class="form-group">
+                <label>Название</label>
+                <input type="text" id="tournament-name" required>
+            </div>
+            <div class="form-group">
+                <label>Дисциплина (ID игры)</label>
+                <input type="number" id="tournament-game-id" required>
+            </div>
+            <div class="form-group">
+                <label>Начало</label>
+                <input type="date" id="tournament-start" required>
+            </div>
+            <div class="form-group">
+                <label>Окончание</label>
+                <input type="date" id="tournament-end" required>
+            </div>
+            <div class="form-group">
+                <label>Страна</label>
+                <input type="text" id="tournament-location">
+            </div>
+            <div class="form-group">
+                <label>Призовой фонд</label>
+                <input type="number" id="tournament-prize" value="0">
+            </div>
+            <div class="form-actions">
+                <button type="submit" class="btn-save">Сохранить</button>
+                <button type="button" class="btn-cancel" onclick="closeTournamentModal()">Отмена</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div id="toast" class="toast"></div>
+
+<script src="../js/config.js"></script>
+<script src="../js/auth.js"></script>
 <script src="../js/api.js"></script>
 <script>
+    AuthService.renderAuthWidget();
+    AuthService.applyVisibility();
+
+    const roleLabels = {
+        Admin: 'Администратор',
+        ContentManager: 'Контент-менеджер',
+        User: 'Пользователь',
+        guest: 'Гость',
+    };
+    const roleLabelEl = document.getElementById('current-role-label');
+    if (roleLabelEl) {
+        roleLabelEl.textContent = roleLabels[AuthService.getRole()] || 'Гость';
+    }
+
+    let allTournaments = [];
+    let editingTournamentId = null;
+
     document.addEventListener('DOMContentLoaded', async () => {
         await loadTournaments();
     });
@@ -60,15 +179,14 @@
     async function loadTournaments() {
         try {
             showLoading('tournaments-grid');
-            const tournaments = await api.getTournaments();
+            allTournaments = await api.getTournaments();
 
-            if (!tournaments || tournaments.length === 0) {
+            if (!allTournaments || allTournaments.length === 0) {
                 document.getElementById('tournaments-grid').innerHTML =
                     '<p class="error-message">Турниры не найдены</p>';
                 return;
             }
-
-            displayTournaments(tournaments);
+            displayTournaments(allTournaments);
         } catch (error) {
             console.error('Error loading tournaments:', error);
             showError('tournaments-grid', 'Ошибка загрузки турниров');
@@ -82,20 +200,112 @@
             return dateB - dateA;
         });
 
-        const tournamentsHTML = sorted.map(tournament => `
-            <div class="card">
-                <h3 class="card-title">${tournament.name}</h3>
+        const isAdmin = AuthService.isAdmin();
+
+        const tournamentsHTML = sorted.map(t => `
+            <div class="card" id="tournament-card-${t.iD_Tournament}">
+                <h3 class="card-title">${t.name}</h3>
                 <div class="card-content">
-                    <p><strong> Дисциплина:</strong> ${tournament.gameName || 'N/A'}</p>
-                    <p><strong> Начало:</strong> ${formatDate(tournament.start_date)}</p>
-                    <p><strong> Окончание:</strong> ${formatDate(tournament.end_date)}</p>
-                    <p><strong> Страна:</strong> ${tournament.location_of_the_event || 'N/A'}</p>
-                    <p><strong> Призовой фонд:</strong> <span style="color: var(--primary-color); font-weight: 600;">${formatCurrency(tournament.prize_pool || 0)}</span></p>
+                    <p><strong>Дисциплина:</strong> ${t.gameName || 'N/A'}</p>
+                    <p><strong>Начало:</strong> ${formatDate(t.start_date)}</p>
+                    <p><strong>Окончание:</strong> ${formatDate(t.end_date)}</p>
+                    <p><strong>Страна:</strong> ${t.location_of_the_event || 'N/A'}</p>
+                    <p><strong>Призовой фонд:</strong> <span style="color: var(--primary-color); font-weight: 600;">${formatCurrency(t.prize_pool || 0)}</span></p>
+                    ${isAdmin ? `
+                    <div class="card-actions">
+                        <button class="btn-sm btn-sm-edit" onclick="editTournament(${t.iD_Tournament})">✏ Редактировать</button>
+                        <button class="btn-sm btn-sm-delete" onclick="deleteTournament(${t.iD_Tournament})">🗑 Удалить</button>
+                    </div>
+                    ` : ''}
                 </div>
             </div>
         `).join('');
 
         document.getElementById('tournaments-grid').innerHTML = tournamentsHTML;
+    }
+
+    function openTournamentModal(id = null) {
+        editingTournamentId = id;
+        const modal = document.getElementById('tournament-modal');
+        const title = document.getElementById('modal-title');
+        const form = document.getElementById('tournament-form');
+
+        if (id) {
+            const t = allTournaments.find(x => x.iD_Tournament === id);
+            if (!t) return;
+            title.textContent = 'Редактировать турнир';
+            document.getElementById('tournament-id').value = t.iD_Tournament;
+            document.getElementById('tournament-name').value = t.name;
+            document.getElementById('tournament-game-id').value = t.iD_Games || '';
+            document.getElementById('tournament-start').value = t.start_date?.substring(0, 10) || '';
+            document.getElementById('tournament-end').value = t.end_date?.substring(0, 10) || '';
+            document.getElementById('tournament-location').value = t.location_of_the_event || '';
+            document.getElementById('tournament-prize').value = t.prize_pool || 0;
+        } else {
+            title.textContent = 'Добавить турнир';
+            form.reset();
+            document.getElementById('tournament-id').value = '';
+        }
+        modal.classList.add('active');
+    }
+
+    function closeTournamentModal() {
+        document.getElementById('tournament-modal').classList.remove('active');
+        editingTournamentId = null;
+    }
+
+    async function saveTournament(event) {
+        event.preventDefault();
+        const id = document.getElementById('tournament-id').value;
+        const data = {
+            ID_Tournament: id ? parseInt(id) : 0,
+            Name: document.getElementById('tournament-name').value,
+            ID_Games: parseInt(document.getElementById('tournament-game-id').value),
+            Start_date: document.getElementById('tournament-start').value,
+            End_date: document.getElementById('tournament-end').value,
+            Location_of_the_event: document.getElementById('tournament-location').value,
+            Prize_pool: parseFloat(document.getElementById('tournament-prize').value) || 0
+        };
+
+        try {
+            const url = id ? `${API_BASE_URL}/Tournaments/${id}` : `${API_BASE_URL}/Tournaments`;
+            const method = id ? 'PUT' : 'POST';
+            const response = await fetch(url, {
+                method: method,
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            });
+            if (!response.ok) throw new Error('Ошибка сохранения');
+            showToast(id ? 'Турнир обновлен' : 'Турнир добавлен', 'success');
+            closeTournamentModal();
+            await loadTournaments();
+        } catch (error) {
+            showToast('Ошибка: ' + error.message, 'error');
+        }
+    }
+
+    function editTournament(id) {
+        openTournamentModal(id);
+    }
+
+    async function deleteTournament(id) {
+        if (!confirm('Удалить турнир?')) return;
+        try {
+            const response = await fetch(`${API_BASE_URL}/Tournaments/${id}`, { method: 'DELETE' });
+            if (!response.ok) throw new Error('Ошибка удаления');
+            showToast('Турнир удален', 'success');
+            await loadTournaments();
+        } catch (error) {
+            showToast('Ошибка удаления', 'error');
+        }
+    }
+
+    function showToast(message, type = 'success') {
+        const toast = document.getElementById('toast');
+        toast.textContent = message;
+        toast.className = `toast ${type}`;
+        setTimeout(() => toast.classList.add('show'), 10);
+        setTimeout(() => toast.classList.remove('show'), 3000);
     }
 </script>
 </body>

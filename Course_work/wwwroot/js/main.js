@@ -154,7 +154,12 @@ async function loadUpcomingMatches() {
     try {
         showLoading('upcoming-matches');
         const matches = await api.getUpcomingMatches();
-
+        console.log('Upcoming matches:', matches);
+        if (matches && matches.length > 0) {
+            console.log('First match:', matches[0]);
+            console.log('match_Time:', matches[0].match_Time);
+            console.log('match_time:', matches[0].match_time);
+        }
         if (!matches || matches.length === 0) {
             document.getElementById('upcoming-matches').innerHTML =
                 '<p style="color: var(--text-secondary); text-align: center;">Нет предстоящих матчей</p>';

@@ -6,64 +6,169 @@
     <title>Команды - Киберспорт</title>
     <link rel="stylesheet" href="../css/style.css">
     <link rel="stylesheet" href="../css/responsive.css">
+    <link rel="stylesheet" href="../css/modal.css">
+    <style>
+        .auth-user { display: flex; align-items: center; gap: 10px; }
+        .auth-role-badge {
+            padding: 3px 10px; border-radius: 20px; font-size: 0.78rem;
+            font-weight: 600; white-space: nowrap;
+        }
+        .auth-name { color: #ccc; font-size: 0.9rem; white-space: nowrap; }
+        .auth-logout-btn {
+            background: transparent; border: 1px solid #444; border-radius: 6px;
+            color: #aaa; padding: 4px 10px; font-size: 0.82rem; cursor: pointer;
+            transition: border-color 0.2s, color 0.2s;
+        }
+        .auth-logout-btn:hover { border-color: #ff4757; color: #ff4757; }
+        .auth-login-link {
+            color: #ff4757; text-decoration: none; font-weight: 600;
+            font-size: 0.9rem; border: 1px solid #ff4757;
+            padding: 5px 14px; border-radius: 6px; transition: background 0.2s;
+        }
+        .auth-login-link:hover { background: rgba(255,71,87,0.12); }
+
+        .content-actions {
+            display: flex; gap: 10px; margin-bottom: 24px; flex-wrap: wrap;
+        }
+        .btn-action {
+            padding: 9px 18px; border-radius: 8px; border: none;
+            font-size: 0.88rem; font-weight: 600; cursor: pointer;
+            transition: opacity 0.2s;
+        }
+        .btn-action:hover { opacity: 0.85; }
+        .btn-add { background: #2ecc71; color: #fff; }
+        .btn-edit { background: #3498db; color: #fff; }
+        .btn-delete { background: #ff4757; color: #fff; }
+
+        .card-actions {
+            display: flex; gap: 8px; margin-top: 12px;
+        }
+        .btn-sm {
+            padding: 5px 14px; border-radius: 6px; border: none;
+            font-size: 0.78rem; font-weight: 600; cursor: pointer;
+            transition: opacity 0.2s;
+        }
+        .btn-sm:hover { opacity: 0.8; }
+        .btn-sm-edit { background: #3498db; color: #fff; }
+        .btn-sm-delete { background: #ff4757; color: #fff; }
+
+        .role-notice {
+            background: rgba(52,152,219,0.1);
+            border: 1px solid rgba(52,152,219,0.3);
+            border-radius: 8px; padding: 10px 16px;
+            color: #7fb3d3; font-size: 0.85rem; margin-bottom: 20px;
+        }
+    </style>
 </head>
 <body>
->
+
 <header class="header">
     <div class="container">
         <div class="header-content">
-            <div class="logo">
-                <h1>ESPORTS<span>.RU</span></h1>
-            </div>
+            <div class="logo"><h1>ESPORTS<span>.RU</span></h1></div>
             <nav class="nav">
                 <ul>
                     <li><a href="../index.html">Главная</a></li>
+                    <li><a href="news.html">Новости</a></li>
                     <li><a href="tournaments.html">Турниры</a></li>
                     <li><a href="teams.html" class="active">Команды</a></li>
                     <li><a href="players.html">Игроки</a></li>
                     <li><a href="matches.html">Матчи</a></li>
                 </ul>
             </nav>
+            <div id="auth-widget"></div>
         </div>
     </div>
 </header>
-
 
 <main class="main-content">
     <div class="container">
         <h1 class="section-title">Киберспортивные команды</h1>
 
-      
+        <div class="role-notice" data-role="auth" style="display:none;">
+            ℹ Вы вошли как: <strong id="current-role-label">—</strong>
+        </div>
+
+        <div class="content-actions" data-role="admin" style="display:none;">
+            <button class="btn-action btn-add" onclick="openTeamModal()">
+                + Добавить команду
+            </button>
+        </div>
+
         <div class="filters" style="margin-bottom: 30px;">
             <select id="country-filter" class="filter-select" style="padding: 10px; background: var(--card-bg); color: var(--text-primary); border: 1px solid var(--border-color); border-radius: 6px;">
                 <option value="">Все страны</option>
             </select>
         </div>
 
-        
         <div id="teams-grid" class="grid-3">
             <div class="loading">Загрузка команд...</div>
         </div>
     </div>
 </main>
 
-
 <footer class="footer">
     <div class="container">
         <div class="footer-content">
             <p>&copy; 2026 Esports.ru - Информационный портал о киберспорте</p>
-            <div class="footer-links">
-                <a href="#">О проекте</a>
-                <a href="#">Контакты</a>
-                <a href="#">Реклама</a>
-            </div>
         </div>
     </div>
 </footer>
 
+<div id="team-modal" class="modal-overlay">
+    <div class="modal">
+        <div class="modal-header">
+            <h3 class="modal-title" id="modal-title">Добавить команду</h3>
+            <button class="modal-close" onclick="closeTeamModal()">&times;</button>
+        </div>
+        <form id="team-form" onsubmit="saveTeam(event)">
+            <input type="hidden" id="team-id">
+            <div class="form-group">
+                <label>Название</label>
+                <input type="text" id="team-name" required>
+            </div>
+            <div class="form-group">
+                <label>Страна</label>
+                <input type="text" id="team-country">
+            </div>
+            <div class="form-group">
+                <label>Год основания</label>
+                <input type="number" id="team-founded">
+            </div>
+            <div class="form-group">
+                <label>Призовые ($)</label>
+                <input type="number" id="team-prize" value="0">
+            </div>
+            <div class="form-actions">
+                <button type="submit" class="btn-save">Сохранить</button>
+                <button type="button" class="btn-cancel" onclick="closeTeamModal()">Отмена</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div id="toast" class="toast"></div>
+
+<script src="../js/config.js"></script>
+<script src="../js/auth.js"></script>
 <script src="../js/api.js"></script>
 <script>
+    AuthService.renderAuthWidget();
+    AuthService.applyVisibility();
+
+    const roleLabels = {
+        Admin: 'Администратор',
+        ContentManager: 'Контент-менеджер',
+        User: 'Пользователь',
+        guest: 'Гость',
+    };
+    const roleLabelEl = document.getElementById('current-role-label');
+    if (roleLabelEl) {
+        roleLabelEl.textContent = roleLabels[AuthService.getRole()] || 'Гость';
+    }
+
     let allTeams = [];
+    let editingTeamId = null;
 
     document.addEventListener('DOMContentLoaded', async () => {
         await loadTeams();
@@ -80,7 +185,6 @@
                     '<p class="error-message">Команды не найдены</p>';
                 return;
             }
-
             displayTeams(allTeams);
             populateCountryFilter();
         } catch (error) {
@@ -91,16 +195,24 @@
 
     function displayTeams(teams) {
         const sorted = teams.sort((a, b) => (b.prize_pool || 0) - (a.prize_pool || 0));
+        const isAdmin = AuthService.isAdmin();
+
         const teamsHTML = sorted.map(team => `
-                <div class="card">
-                    <h3 class="card-title">${team.name}</h3>
-                    <div class="card-content">
-                        <p><strong> Страна:</strong> ${team.country || 'N/A'}</p>
-                        <p><strong> Основана:</strong> ${team.founded_year || 'N/A'}</p>
-                        <p><strong> Призовые:</strong> <span style="color: var(--primary-color); font-weight: 600;">${formatCurrency(team.prize_pool || 0)}</span></p>
+            <div class="card" id="team-card-${team.iD_Teams}">
+                <h3 class="card-title">${team.name}</h3>
+                <div class="card-content">
+                    <p><strong>Страна:</strong> ${team.country || 'N/A'}</p>
+                    <p><strong>Основана:</strong> ${team.founded_year || 'N/A'}</p>
+                    <p><strong>Призовые:</strong> <span style="color: var(--primary-color); font-weight: 600;">${formatCurrency(team.prize_pool || 0)}</span></p>
+                    ${isAdmin ? `
+                    <div class="card-actions">
+                        <button class="btn-sm btn-sm-edit" onclick="editTeam(${team.iD_Teams})">✏ Редактировать</button>
+                        <button class="btn-sm btn-sm-delete" onclick="deleteTeam(${team.iD_Teams})">🗑 Удалить</button>
                     </div>
+                    ` : ''}
                 </div>
-            `).join('');
+            </div>
+        `).join('');
 
         document.getElementById('teams-grid').innerHTML = teamsHTML;
     }
@@ -122,6 +234,86 @@
             const filtered = country ? allTeams.filter(t => t.country === country) : allTeams;
             displayTeams(filtered);
         });
+    }
+
+    function openTeamModal(id = null) {
+        editingTeamId = id;
+        const modal = document.getElementById('team-modal');
+        const title = document.getElementById('modal-title');
+        const form = document.getElementById('team-form');
+
+        if (id) {
+            const t = allTeams.find(x => x.iD_Teams === id);
+            if (!t) return;
+            title.textContent = 'Редактировать команду';
+            document.getElementById('team-id').value = t.iD_Teams;
+            document.getElementById('team-name').value = t.name;
+            document.getElementById('team-country').value = t.country || '';
+            document.getElementById('team-founded').value = t.founded_year || '';
+            document.getElementById('team-prize').value = t.prize_pool || 0;
+        } else {
+            title.textContent = 'Добавить команду';
+            form.reset();
+            document.getElementById('team-id').value = '';
+        }
+        modal.classList.add('active');
+    }
+
+    function closeTeamModal() {
+        document.getElementById('team-modal').classList.remove('active');
+        editingTeamId = null;
+    }
+
+    async function saveTeam(event) {
+        event.preventDefault();
+        const id = document.getElementById('team-id').value;
+        const data = {
+            ID_Teams: id ? parseInt(id) : 0,
+            Name: document.getElementById('team-name').value,
+            Country: document.getElementById('team-country').value,
+            Founded_year: parseInt(document.getElementById('team-founded').value) || null,
+            Prize_pool: parseFloat(document.getElementById('team-prize').value) || 0
+        };
+
+        try {
+            const url = id ? `${API_BASE_URL}/Teams/${id}` : `${API_BASE_URL}/Teams`;
+            const method = id ? 'PUT' : 'POST';
+            const response = await fetch(url, {
+                method: method,
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            });
+            if (!response.ok) throw new Error('Ошибка сохранения');
+            showToast(id ? 'Команда обновлена' : 'Команда добавлена', 'success');
+            closeTeamModal();
+            await loadTeams();
+        } catch (error) {
+            showToast('Ошибка: ' + error.message, 'error');
+        }
+    }
+
+    function editTeam(id) {
+        openTeamModal(id);
+    }
+
+    async function deleteTeam(id) {
+        if (!confirm('Удалить команду?')) return;
+        try {
+            const response = await fetch(`${API_BASE_URL}/Teams/${id}`, { method: 'DELETE' });
+            if (!response.ok) throw new Error('Ошибка удаления');
+            showToast('Команда удалена', 'success');
+            await loadTeams();
+        } catch (error) {
+            showToast('Ошибка удаления', 'error');
+        }
+    }
+
+    function showToast(message, type = 'success') {
+        const toast = document.getElementById('toast');
+        toast.textContent = message;
+        toast.className = `toast ${type}`;
+        setTimeout(() => toast.classList.add('show'), 10);
+        setTimeout(() => toast.classList.remove('show'), 3000);
     }
 </script>
 </body>

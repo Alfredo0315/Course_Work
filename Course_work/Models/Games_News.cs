@@ -11,8 +11,7 @@ namespace Course_Work.Models
 
         [Column("ID_News")]
         public int ID_News { get; set; }
-
-        // Навигационные свойства
+        
         [ForeignKey("ID_Games")]
         public virtual Game Game { get; set; } = null!;
 

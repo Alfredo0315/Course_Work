@@ -6,25 +6,74 @@
     <title>Игроки - Киберспорт</title>
     <link rel="stylesheet" href="../css/style.css">
     <link rel="stylesheet" href="../css/responsive.css">
-    <base target="_blank">
+    <link rel="stylesheet" href="../css/modal.css">
+    <style>
+        .auth-user { display: flex; align-items: center; gap: 10px; }
+        .auth-role-badge {
+            padding: 3px 10px; border-radius: 20px; font-size: 0.78rem;
+            font-weight: 600; white-space: nowrap;
+        }
+        .auth-name { color: #ccc; font-size: 0.9rem; white-space: nowrap; }
+        .auth-logout-btn {
+            background: transparent; border: 1px solid #444; border-radius: 6px;
+            color: #aaa; padding: 4px 10px; font-size: 0.82rem; cursor: pointer;
+            transition: border-color 0.2s, color 0.2s;
+        }
+        .auth-logout-btn:hover { border-color: #ff4757; color: #ff4757; }
+        .auth-login-link {
+            color: #ff4757; text-decoration: none; font-weight: 600;
+            font-size: 0.9rem; border: 1px solid #ff4757;
+            padding: 5px 14px; border-radius: 6px; transition: background 0.2s;
+        }
+        .auth-login-link:hover { background: rgba(255,71,87,0.12); }
+
+        .content-actions {
+            display: flex; gap: 10px; margin-bottom: 24px; flex-wrap: wrap;
+        }
+        .btn-action {
+            padding: 9px 18px; border-radius: 8px; border: none;
+            font-size: 0.88rem; font-weight: 600; cursor: pointer;
+            transition: opacity 0.2s;
+        }
+        .btn-action:hover { opacity: 0.85; }
+        .btn-add { background: #2ecc71; color: #fff; }
+        .btn-edit { background: #3498db; color: #fff; }
+        .btn-delete { background: #ff4757; color: #fff; }
+
+        .role-notice {
+            background: rgba(52,152,219,0.1);
+            border: 1px solid rgba(52,152,219,0.3);
+            border-radius: 8px; padding: 10px 16px;
+            color: #7fb3d3; font-size: 0.85rem; margin-bottom: 20px;
+        }
+
+        .table-container .btn-sm {
+            padding: 3px 10px; border-radius: 4px; border: none;
+            font-size: 0.72rem; font-weight: 600; cursor: pointer;
+            transition: opacity 0.2s; margin: 0 2px;
+        }
+        .table-container .btn-sm:hover { opacity: 0.8; }
+        .table-container .btn-sm-edit { background: #3498db; color: #fff; }
+        .table-container .btn-sm-delete { background: #ff4757; color: #fff; }
+    </style>
 </head>
 <body>
 
 <header class="header">
     <div class="container">
         <div class="header-content">
-            <div class="logo">
-                <h1>ESPORTS<span>.RU</span></h1>
-            </div>
+            <div class="logo"><h1>ESPORTS<span>.RU</span></h1></div>
             <nav class="nav">
                 <ul>
                     <li><a href="../index.html">Главная</a></li>
+                    <li><a href="news.html">Новости</a></li>
                     <li><a href="tournaments.html">Турниры</a></li>
                     <li><a href="teams.html">Команды</a></li>
                     <li><a href="players.html" class="active">Игроки</a></li>
                     <li><a href="matches.html">Матчи</a></li>
                 </ul>
             </nav>
+            <div id="auth-widget"></div>
         </div>
     </div>
 </header>
@@ -33,11 +82,20 @@
     <div class="container">
         <h1 class="section-title">Киберспортсмены</h1>
 
+        <div class="role-notice" data-role="auth" style="display:none;">
+            ℹ Вы вошли как: <strong id="current-role-label">—</strong>
+        </div>
+
+        <div class="content-actions" data-role="admin" style="display:none;">
+            <button class="btn-action btn-add" onclick="openPlayerModal()">
+                + Добавить игрока
+            </button>
+        </div>
+
         <div class="filters" style="margin-bottom: 30px; display: flex; gap: 15px; flex-wrap: wrap;">
             <select id="country-filter" class="filter-select" style="padding: 10px; background: var(--card-bg); color: var(--text-primary); border: 1px solid var(--border-color); border-radius: 6px;">
                 <option value="">Все страны</option>
             </select>
-            <!-- Только сортировка по призовым -->
             <div style="display: flex; gap: 5px;">
                 <button id="sort-prize-desc" class="btn" title="По призовым (убывание)">Призовые ↓</button>
                 <button id="sort-prize-asc" class="btn btn-secondary" title="По призовым (возрастание)">Призовые ↑</button>
@@ -54,10 +112,11 @@
                     <th>Страна</th>
                     <th>Команда</th>
                     <th>Призовые</th>
+                    <th data-role="admin" style="display:none;">Действия</th>
                 </tr>
                 </thead>
                 <tbody id="players-tbody">
-                <tr><td colspan="6" style="text-align: center;">Загрузка...</td></tr>
+                <tr><td colspan="7" style="text-align: center;">Загрузка...</td></tr>
                 </tbody>
             </table>
         </div>
@@ -68,20 +127,74 @@
     <div class="container">
         <div class="footer-content">
             <p>&copy; 2026 Esports.ru - Информационный портал о киберспорте</p>
-            <div class="footer-links">
-                <a href="#">О проекте</a>
-                <a href="#">Контакты</a>
-                <a href="#">Реклама</a>
-            </div>
         </div>
     </div>
 </footer>
 
+<div id="player-modal" class="modal-overlay">
+    <div class="modal">
+        <div class="modal-header">
+            <h3 class="modal-title" id="modal-title">Добавить игрока</h3>
+            <button class="modal-close" onclick="closePlayerModal()">&times;</button>
+        </div>
+        <form id="player-form" onsubmit="savePlayer(event)">
+            <input type="hidden" id="player-id">
+            <div class="form-group">
+                <label>Никнейм</label>
+                <input type="text" id="player-nickname" required>
+            </div>
+            <div class="form-group">
+                <label>Имя</label>
+                <input type="text" id="player-name">
+            </div>
+            <div class="form-group">
+                <label>Фамилия</label>
+                <input type="text" id="player-surname">
+            </div>
+            <div class="form-group">
+                <label>Страна</label>
+                <input type="text" id="player-country">
+            </div>
+            <div class="form-group">
+                <label>Команда (ID)</label>
+                <input type="number" id="player-team-id">
+            </div>
+            <div class="form-group">
+                <label>Призовые ($)</label>
+                <input type="number" id="player-prize" value="0">
+            </div>
+            <div class="form-actions">
+                <button type="submit" class="btn-save">Сохранить</button>
+                <button type="button" class="btn-cancel" onclick="closePlayerModal()">Отмена</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div id="toast" class="toast"></div>
+
+<script src="../js/config.js"></script>
+<script src="../js/auth.js"></script>
 <script src="../js/api.js"></script>
 <script>
+    AuthService.renderAuthWidget();
+    AuthService.applyVisibility();
+
+    const roleLabels = {
+        Admin: 'Администратор',
+        ContentManager: 'Контент-менеджер',
+        User: 'Пользователь',
+        guest: 'Гость',
+    };
+    const roleLabelEl = document.getElementById('current-role-label');
+    if (roleLabelEl) {
+        roleLabelEl.textContent = roleLabels[AuthService.getRole()] || 'Гость';
+    }
+
     let allPlayers = [];
-    let currentSort = 'prize-desc'; // 'prize-desc' или 'prize-asc'
+    let currentSort = 'prize-desc';
     let currentCountry = '';
+    let editingPlayerId = null;
 
     document.addEventListener('DOMContentLoaded', async () => {
         await loadPlayers();
@@ -94,11 +207,10 @@
 
             if (!allPlayers || allPlayers.length === 0) {
                 document.getElementById('players-tbody').innerHTML =
-                    '<tr><td colspan="6" class="error-message">Игроки не найдены</td></tr>';
+                    '<tr><td colspan="7" class="error-message">Игроки не найдены</td></tr>';
                 return;
             }
 
-            // Добавляем исходный индекс для отображения рейтинга
             allPlayers.forEach((player, index) => {
                 player.originalRank = index + 1;
             });
@@ -108,7 +220,7 @@
         } catch (error) {
             console.error('Error loading players:', error);
             document.getElementById('players-tbody').innerHTML =
-                '<tr><td colspan="6" class="error-message">Ошибка загрузки игроков</td></tr>';
+                '<tr><td colspan="7" class="error-message">Ошибка загрузки игроков</td></tr>';
         }
     }
 
@@ -121,23 +233,28 @@
 
     function displayPlayers() {
         let players = getFilteredPlayers();
+        const isAdmin = AuthService.isAdmin();
 
-        // Применяем сортировку по призовым
         if (currentSort === 'prize-asc') {
             players.sort((a, b) => (a.prize_pool || 0) - (b.prize_pool || 0));
         } else {
-            // По умолчанию - убывание
             players.sort((a, b) => (b.prize_pool || 0) - (a.prize_pool || 0));
         }
 
         const playersHTML = players.map((player, index) => `
-            <tr>
+            <tr id="player-row-${player.iD_Players ?? player.iD_Player}">
                 <td style="color: var(--primary-color); font-weight: 700;">#${index + 1}</td>
                 <td><strong>${player.nickname}</strong></td>
                 <td>${player.name || ''} ${player.surname || ''}</td>
                 <td>${player.country || 'N/A'}</td>
                 <td>${player.teamName || 'Без команды'}</td>
                 <td style="color: var(--primary-color); font-weight: 600;">${formatCurrency(player.prize_pool || 0)}</td>
+                ${isAdmin ? `
+                <td>
+                    <button class="btn-sm btn-sm-edit" onclick="editPlayer(${player.iD_Players ?? player.iD_Player})">✏</button>
+                    <button class="btn-sm btn-sm-delete" onclick="deletePlayer(${player.iD_Players ?? player.iD_Player})">🗑</button>
+                </td>
+                ` : '<td></td>'}
             </tr>
         `).join('');
 
@@ -150,14 +267,12 @@
         const currentValue = select.value;
 
         select.innerHTML = '<option value="">Все страны</option>';
-
         countries.forEach(country => {
             const option = document.createElement('option');
             option.value = country;
             option.textContent = country;
             select.appendChild(option);
         });
-
         if (currentValue && countries.includes(currentValue)) {
             select.value = currentValue;
         }
@@ -166,7 +281,6 @@
     function updateActiveButton() {
         const descBtn = document.getElementById('sort-prize-desc');
         const ascBtn = document.getElementById('sort-prize-asc');
-
         if (currentSort === 'prize-desc') {
             descBtn.className = 'btn';
             ascBtn.className = 'btn btn-secondary';
@@ -177,27 +291,105 @@
     }
 
     function setupFilters() {
-        // Фильтр страны
         document.getElementById('country-filter').addEventListener('change', (e) => {
             currentCountry = e.target.value;
             displayPlayers();
         });
-
-        // Сортировка по призовым (убывание)
         document.getElementById('sort-prize-desc').addEventListener('click', () => {
             currentSort = 'prize-desc';
             updateActiveButton();
             displayPlayers();
         });
-
-        // Сортировка по призовым (возрастание)
         document.getElementById('sort-prize-asc').addEventListener('click', () => {
             currentSort = 'prize-asc';
             updateActiveButton();
             displayPlayers();
         });
-
         updateActiveButton();
+    }
+
+    function openPlayerModal(id = null) {
+        editingPlayerId = id;
+        const modal = document.getElementById('player-modal');
+        const title = document.getElementById('modal-title');
+        const form = document.getElementById('player-form');
+
+        if (id) {
+            const p = allPlayers.find(x => (x.iD_Players ?? x.iD_Player) === id);
+            if (!p) return;
+            title.textContent = 'Редактировать игрока';
+            document.getElementById('player-id').value = p.iD_Players ?? p.iD_Player;
+            document.getElementById('player-nickname').value = p.nickname;
+            document.getElementById('player-name').value = p.name || '';
+            document.getElementById('player-surname').value = p.surname || '';
+            document.getElementById('player-country').value = p.country || '';
+            document.getElementById('player-team-id').value = p.iD_Teams || '';
+            document.getElementById('player-prize').value = p.prize_pool || 0;
+        } else {
+            title.textContent = 'Добавить игрока';
+            form.reset();
+            document.getElementById('player-id').value = '';
+        }
+        modal.classList.add('active');
+    }
+
+    function closePlayerModal() {
+        document.getElementById('player-modal').classList.remove('active');
+        editingPlayerId = null;
+    }
+
+    async function savePlayer(event) {
+        event.preventDefault();
+        const id = document.getElementById('player-id').value;
+        const data = {
+            ID_Players: id ? parseInt(id) : 0,
+            Nickname: document.getElementById('player-nickname').value,
+            Name: document.getElementById('player-name').value,
+            Surname: document.getElementById('player-surname').value,
+            Country: document.getElementById('player-country').value,
+            ID_Teams: parseInt(document.getElementById('player-team-id').value) || null,
+            Prize_pool: parseFloat(document.getElementById('player-prize').value) || 0
+        };
+
+        try {
+            const url = id ? `${API_BASE_URL}/Players/${id}` : `${API_BASE_URL}/Players`;
+            const method = id ? 'PUT' : 'POST';
+            const response = await fetch(url, {
+                method: method,
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            });
+            if (!response.ok) throw new Error('Ошибка сохранения');
+            showToast(id ? 'Игрок обновлен' : 'Игрок добавлен', 'success');
+            closePlayerModal();
+            await loadPlayers();
+        } catch (error) {
+            showToast('Ошибка: ' + error.message, 'error');
+        }
+    }
+
+    function editPlayer(id) {
+        openPlayerModal(id);
+    }
+
+    async function deletePlayer(id) {
+        if (!confirm('Удалить игрока?')) return;
+        try {
+            const response = await fetch(`${API_BASE_URL}/Players/${id}`, { method: 'DELETE' });
+            if (!response.ok) throw new Error('Ошибка удаления');
+            showToast('Игрок удален', 'success');
+            await loadPlayers();
+        } catch (error) {
+            showToast('Ошибка удаления', 'error');
+        }
+    }
+
+    function showToast(message, type = 'success') {
+        const toast = document.getElementById('toast');
+        toast.textContent = message;
+        toast.className = `toast ${type}`;
+        setTimeout(() => toast.classList.add('show'), 10);
+        setTimeout(() => toast.classList.remove('show'), 3000);
     }
 </script>
 </body>
